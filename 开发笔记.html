@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="ls.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div id="h1"><span class="smallh1"></span></div>
+    <div id="body">
+        <h2>待开发</h2>
+        <ol>
+            <li>在 controller 前加个中间件</li>
+            <li></li>
+            <li></li>
+        </ol>
+        <ol>
+            <li>自定义路由</li>
+            <li>dao</li>
+            <li>公共控制器、服务、模型</li>
+            <li>实现可挂载插件（挂在三个公共类上？）</li>
+            <li>封装 request 类</li>
+            <li>实现 cookie、session</li>
+            <li></li>
+        </ol>
+        <details>
+            <summary>路由实现</summary>
+            <span class="em">url 转发</span>：
+            <p>
+                要实现路由，就必须进行 url 重写（也称 pathinfo 模式），而 url 重写是建立在 url 转发的基础上的，url 转发由 apache 的 mod_rewrite.so
+                模块（较新版本的 apache 默认开启该模块）提供，然后在网站根目录新建 .htaccess 文件，粘贴如下代码：
+            </p>
+            <code>
+                &lt;IfModule mod_rewrite.c&gt;
+                    Options +FollowSymlinks -Multiviews
+                    RewriteEngine On
+
+                    RewriteCond %{REQUEST_FILENAME} !-d
+                    RewriteCond %{REQUEST_FILENAME} !-f
+                    RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+                &lt;/IfModule&gt;
+            </code>
+            <p>
+                OK，这样就在该目录下开启了 url 转发，该目录的所有请求都会被转发到 index.php 文件，之后就可以通过解析 url 来实现路由了。
+            </p>
+            <span class="em">路由注册</span>：
+            <p>
+
+            </p>
+        </details>
+        <details>
+            <summary></summary>
+            <span class="em"></span>：
+            <p>
+
+            </p>
+            <span class="em"></span>：
+            <p>
+
+            </p>
+            <span class="em"></span>：
+            <p>
+
+            </p>
+        </details>
+    </div>
+</body>
+
+</html>

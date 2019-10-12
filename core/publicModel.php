@@ -2,7 +2,7 @@
 
 namespace core;
 
-class Model{
+class publicModel{
   //保存 doa 实例
   protected $dao;
 
