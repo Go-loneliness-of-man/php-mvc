@@ -1,2 +1,2 @@
-# php-mvc
-个人项目，用 PHP 实现的简易 MVC 框架
+# rw
+一个基于 MVC 的 PHP 框架

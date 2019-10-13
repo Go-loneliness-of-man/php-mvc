@@ -1,8 +1,10 @@
 <?php
 
-$config = [                              // 各配置项
+// 全局配置数组
+$config = [
 
-  'database' => [                        // 数据库配置
+  // 数据库配置
+  'database' => [
     'type' => 'mysql',                   // 数据库管理系统
     'host' => 'localhost',               // 客户端主机
     'port' => '3306',                    // 数据库端口
@@ -13,13 +15,20 @@ $config = [                              // 各配置项
     'prefix' => '',                      // 表前缀
   ],
 
-  'system' => [                          // 系统配置
+  // 系统配置
+  'system' => [
     'error_reporting' => E_ALL,          // 判断输出哪些错误处理，E_ALL 代表所有输出所有错误信息
     'display_errors' => 1                // 是否显示错误信息
   ],
 
-  'publicFuncFile' => [                  // 公共函数文件
+  // 配置公共函数文件
+  'publicFuncFile' => [
     'public.php'
+  ],
+
+  // 配置中间件，执行顺序与数组顺序相同，每个元素依次是类名、方法名
+  'middlewareFile' => [
+    ['test', 'testFunc']
   ]
 ];
 

@@ -1,6 +1,6 @@
 <?php
 
-// 递归解析变量为字符串，参数 $s、$var、$h 依次是输出字符串、待解析变量、递归深度
+// 递归解析变量为字符串，参数 $s、$var、$h 依次是待输出字符串、待解析变量、当前递归深度
 function recursiveOutputVariable($s, $var, $h) {
     $type = gettype($var);                                               // 获取变量类型
 
@@ -28,7 +28,7 @@ function recursiveOutputVariable($s, $var, $h) {
     return $s;
 }
 
-// 打印变量，用于调试
+// 格式化输出变量，便于调试查看
 function dump($var, $name = '') {
     $name = $name === '' ? '' : "    $$name :<br>";
     $s = "<pre>$name";

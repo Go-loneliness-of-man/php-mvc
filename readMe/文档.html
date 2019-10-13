@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="ls.css">
+  <style>
+
+  </style>
+</head>
+
+<body>
+  <div id="h1"><span class="smallh1">rw 文档</span></div>
+  <div id="body">
+    <details>
+      <summary>前言</summary>
+      <span class="em">声明</span>：
+      <p>
+        本框架由 <a target = "_blank" href="https://github.com/Go-loneliness-of-man">goLone</a> 个人开发，<span class="em">仅供新手学习交流使用</span>，
+        相比成熟框架尚存在诸多缺陷，请勿用作商业用途，如若造成损失，概不负责 ╮(￣▽￣)╭
+      </p>
+      <p>
+        也欢迎有想法的小伙伴提出改进意见，这是我第一次写框架，<span class="em">大部分功能是模仿自己用过的几个框架加的，但不存在丝毫源码抄袭行为</span>，所有具体的代码实现均为原创。
+      </p>
+      <span class="em">框架简介</span>：
+      <p>
+        本框架主要供新手学习使用。
+      </p>
+      <span class="em">新手指引</span>：
+      <p>
+        rw 基于 MVC，标准 MVC 运行流程如下：
+      </p>
+      <img src="MVC 框架基本运行流程.png">
+      <p>
+        在 MVC 的基础上，rw 进行了拓展，目前拓展的部分包括 service、middleware，rw 运行流程如下：
+      </p>
+      <img src="php-mvc 运行流程.png">
+      <p>
+        rw 注释详尽，建议对面向对象比较了解的新手学会基本使用后，直接看源码。
+      </p>
+      <span class="em">框架约定</span>：
+      <ol>
+        <li>除常量外，文件名、类、命名空间统一采用小驼峰</li>
+        <li>所有类文件的文件名与类名相同，并且一个类文件只放一个类</li>
+        <li></li>
+        <li></li>
+      </ol>
+    </details>
+
+    <details>
+      <summary>目录结构</summary>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+    </details>
+
+    <details>
+      <summary>路由</summary>
+      <p>
+        路径：/config/route.php
+      </p>
+      <p>
+        默认路由与 ThinkPHP 相同：<span class="em">http://域名/模块/控制器/操作</span>
+      </p>
+      <p>
+        支持路由注册，支持 params 传参，路由注册写法如下：
+      </p>
+      <code>
+        $route = [
+          ['路由路径', '模块名', '控制器名', '操作名'],
+          ['路由路径/:参数 1 名/:参数 2 名/:参数 3 名', '模块名', '控制器名', '操作名']
+        ];
+      </code>
+    </details>
+
+    <details>
+      <summary>控制器</summary>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+    </details>
+
+    <details>
+      <summary>服务</summary>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+    </details>
+
+    <details>
+      <summary>模型</summary>
+      <span class="em"></span>：
+      <p>
+        数据表命名统一采用小写下划线，与 model 的小驼峰对应
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+    </details>
+
+    <details>
+      <summary>配置文件</summary>
+      <p>
+        支持<span class="em">全局配置文件、模块配置文件</span>。
+      </p>
+      <span class="em">全局配置文件</span>：
+      <p>
+        路径：/config/config.php
+      </p>
+      <p>
+        作用于整个应用。
+      </p>
+      <span class="em">模块配置文件</span>：
+      <p>
+        路径：/app/模块名/config.php
+      </p>
+      <p>
+        用于为模块进行个性化配置，该文件会覆盖全局配置部分参数。格式固定：
+      </p>
+      <code>
+          &lt;?php
+
+          $模块名 = [                               // 配置变量名与模块名保持一致
+
+          ];
+      </code>
+    </details>
+
+    <details>
+      <summary>DAO</summary>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+    </details>
+
+    <details>
+      <summary>公共函数</summary>
+      <p>
+        支持<span class="em">全局公共函数、模块公共函数</span>，需在 config 文件（全局、模块都可以）内配置，将文件名加入 'publicFuncFile' 即可。
+      </p>
+      <span class="em">全局公共函数</span>：
+      <p>
+        路径：/publicFunc/文件名
+      </p>
+      <p>
+        作用于整个应用。
+      </p>
+      <span class="em">模块公共函数</span>：
+      <p>
+        路径：/app/模块名/文件名
+      </p>
+      <p>
+        只在当前模块内生效，<span class="em">若与全局公共函数文件同名，会覆盖掉全局公共函数文件</span>。
+      </p>
+    </details>
+
+    <details>
+      <summary>中间件</summary>
+      <p>
+        路径：/middleware/文件名
+      </p>
+      <p>
+        <span class="em">中间件是个类文件，可以有很多个中间件</span>。中间件必须在 config 文件（全局、模块都可以）的 'middleware' 中进行配置才能生效，写法如下：
+      </p>
+      <code>
+        'middleware' => [
+          ['中间件名', '被执行的方法名']
+        ]
+      </code>
+      <p>
+        中间件的执行顺序与在数组中的顺序相同，中间件不会被实例化，所以其<span class="em">方法必须是静态方法</span>，被默认传入 $_REQUEST 作为参数。
+      </p>
+    </details>
+
+    <details>
+      <summary></summary>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+    </details>
+  </div>
+</body>
+
+</html>

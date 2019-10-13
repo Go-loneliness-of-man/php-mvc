@@ -1,5 +1,6 @@
 <?php
 
+// 命名空间
 namespace core;
 use \PDO;
 use \PDOStatement;
@@ -26,7 +27,7 @@ class Dao{
     //实例化 PDO 对象
     try{
       $this->pdo = new PDO($type.':host='.$host.';port='.$port.';dbname='.$dbname, $user, $pwd);    //实例化
-      $this->pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);  //异常处理
+      $this->pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);           //异常处理
     }
     catch(PDOException $e)
     {
@@ -35,10 +36,10 @@ class Dao{
     }
   }
 
-  // 构造 SELECT
+  // sql 构造器，构造 SELECT
   public function select($params) {
-    $sql = '';                                                  // 存储 sql
-    extract(params);                                            // 批量生成参数
+    $sql = '';                                                                      // 存储 sql
+    extract(params);                                                                // 批量生成参数
 
   }
 

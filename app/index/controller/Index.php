@@ -3,7 +3,11 @@ namespace app\index;
 
 class index{
   public function index(){
-    echo '';
+    return '';
+  }
+
+  public function test(){
+    return 'test';
   }
 }
 
