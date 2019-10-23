@@ -21,40 +21,73 @@
         本框架由 <a target = "_blank" href="https://github.com/Go-loneliness-of-man">goLone</a> 个人开发，<span class="em">仅供新手学习交流使用</span>，
         相比成熟框架尚存在诸多缺陷，请勿用作商业用途，如若造成损失，概不负责 ╮(￣▽￣)╭
       </p>
-      <p>
-        也欢迎有想法的小伙伴提出改进意见，这是我第一次写框架，<span class="em">大部分功能是模仿自己用过的几个框架加的，但不存在丝毫源码抄袭行为</span>，所有具体的代码实现均为原创。
-      </p>
       <span class="em">框架简介</span>：
       <p>
-        本框架主要供新手学习使用。
+        本框架主要供新手学习使用，rw 的<span class="em">大部分功能是我模仿自己用过的几个框架的创意</span>，但 99% 的代码实现均为原创（比如 .htaccess 文件我是直接拿了 tp5 的），模仿的只有创意，
+        当然我也加了一些自己的创意，比如 sql 构造器。这是我第一次写框架，肯定存在诸多不足，欢迎有想法的小伙伴提出改进意见，我会参考的。
       </p>
       <span class="em">新手指引</span>：
       <p>
-        rw 基于 MVC，标准 MVC 运行流程如下：
+        rw 基于 MVC 开发，但在 MVC 的基础上进行了一些拓展，目前拓展的部分包括 service、middleware，以下两张流程图分别表示了基本的 MVC 运行流程、rw 的运行流程：
       </p>
       <img src="MVC 框架基本运行流程.png">
+      <img src="RW 运行流程.png">
       <p>
-        在 MVC 的基础上，rw 进行了拓展，目前拓展的部分包括 service、middleware，rw 运行流程如下：
-      </p>
-      <img src="php-mvc 运行流程.png">
-      <p>
-        rw 注释详尽，建议对面向对象比较了解的新手学会基本使用后，直接看源码。
+        rw 注释详尽，<span class="em">建议对面向对象比较了解的同学学会基本使用后，直接看源码</span>。
       </p>
       <span class="em">框架约定</span>：
       <ol>
-        <li>除常量外，文件名、类、命名空间统一采用小驼峰</li>
+        <li>除常量外，文件、类、命名空间统一采用小驼峰</li>
         <li>所有类文件的文件名与类名相同，并且一个类文件只放一个类</li>
-        <li></li>
         <li></li>
       </ol>
     </details>
 
     <details>
       <summary>目录结构</summary>
-      <span class="em"></span>：
-      <p>
-
-      </p>
+      <code>
+          ├─app                                 // 应用目录
+          │  ├─config                           // 全局配置文件目录
+          │  │     ├─config.php                 // 全局配置文件
+          │  │     └─route.php                  // 路由配置文件
+          │  │
+          │  ├─index                            // 模块目录
+          │  │     ├─config.php                 // 模块配置文件
+          │  │     │
+          │  │     ├─controller                 // 模块控制器目录
+          │  │     │  └─index.php               // 控制器 index
+          │  │     │
+          │  │     ├─model                      // 模块模型目录
+          │  │     ├─service                    // 模块服务目录
+          │  │     └─view                       // 模块视图目录
+          │  │
+          │  ├─middleware                       // 中间件目录
+          │  │     └─test.php                   // 示例，可删
+          │  │
+          │  └─publicFunc                       // 公共函数目录
+          │        └─public.php                 // 公共函数文件，可以有很多个
+          │
+          ├─core                                // 框架核心目录
+          │  ├─app.php                          // 初始化文件
+          │  ├─dao.php                          // dao，数据库访问对象的类
+          │  ├─publicController.php             // 公共控制器类
+          │  ├─publicModel.php                  // 公共模型类
+          │  ├─publicService.php                // 公共服务类
+          │  └─route.php                        // 路由类
+          │
+          ├─plugIn                              // 插件目录
+          ├─public                              // 外部访问目录
+          │  ├─.htaccess                        // 分布式配置文件，用于配置 url 转发
+          │  └─index.php                        // 入口文件
+          │
+          └─readMe                              // 文档目录
+             ├─ls.css                           // 文档样式
+             ├─MVC 框架基本运行流程.png
+             ├─php-mvc 运行流程.png
+             ├─php-mvc 运行流程.xmind
+             ├─开发笔记.html
+             └─文档.html                        // 框架文档
+      </code>
       <span class="em"></span>：
       <p>
 
@@ -68,7 +101,7 @@
     <details>
       <summary>路由</summary>
       <p>
-        路径：/config/route.php
+        路径：/app/config/route.php
       </p>
       <p>
         默认路由与 ThinkPHP 相同：<span class="em">http://域名/模块/控制器/操作</span>
@@ -79,25 +112,106 @@
       <code>
         $route = [
           ['路由路径', '模块名', '控制器名', '操作名'],
-          ['路由路径/:参数 1 名/:参数 2 名/:参数 3 名', '模块名', '控制器名', '操作名']
+          ['路由路径/:参数 1 名/:参数 2 名/:参数 3 名', '模块名', '控制器名', '操作名']     // params 传参
         ];
       </code>
     </details>
 
     <details>
       <summary>控制器</summary>
+      <p>
+        一个控制器的一般写法是：
+      </p>
+      <code>
+        &lt;?php
+          namespace app\模块名;// 命名空间，与文件路径保持一致
+
+          use \core\publicController;// 引用公共控制器
+
+          class index extends publicController {// 继承公共控制器
+
+            public function 操作名() {
+              函数体;
+              return 结果;
+            }
+          }
+      </code>
+      <p>
+        控制器一般包含参数过滤、调用 service、渲染视图等操作，因此我为公共控制器实现了以下方法：
+      </p>
+
+      <span class="em">get($isJson = 0, $convert = 1)</span>：
+      <p>
+        获取请求参数，栗子：$var = $this->get();
+      </p>
+      <ol>
+        <li><span class="em">$isJson</span>，是否作为 json 进行转换，若是 1 将请求参数作为 json 进行转换，默认 0。</li>
+        <li><span class="em">$convert</span>，是否进行类型转换，若是 1 将仅包含数字的字符串转换为 integer，默认为 1，若 $isJson 为 1 则不转换。</li>
+      </ol>
+
+      <span class="em">jump($msg, $m = M, $c = C, $a = A, $time = 5, $params = [])</span>：
+      <p>
+        路由跳转，只支持在项目内跳转。
+      </p>
+      <ol>
+        <li><span class="em">$msg</span>，跳转前输出的消息。</li>
+        <li><span class="em">$m</span>，跳转到的模块，默认 index 模块。</li>
+        <li><span class="em">$c</span>，跳转到的控制器，默认 index 控制器。</li>
+        <li><span class="em">$a</span>，跳转到的操作，默认 index 操作。</li>
+        <li><span class="em">$time</span>，延时跳转，默认 5 秒。</li>
+        <li><span class="em">$params</span>，传递的参数，默认为 []，会被转换为 json 加到 url 末尾的查询字符串，key 为 params。</li>
+      </ol>
+
+      <span class="em">rule($rule, $params)</span>：
+      <p>
+        参数校验，若不通过则停止执行并抛出错误信息。栗子：$this->rule(['a' => 'string', 'b' => 'integer', 'c' => 'integer'], $被校验的参数);
+      </p>
+      <ol>
+        <li><span class="em">$rule</span>，用于定义校验规则，一维数组，key 为参数名，val 为参数类型。</li>
+        <li><span class="em">$params</span>，被校验的参数。</li>
+      </ol>
+      <p>
+        $rule 的 val 可以是以下类型：
+      </p>
+      <ol>
+        <li><span class="em">boolean</span></li>
+        <li><span class="em">integer</span></li>
+        <li><span class="em">double</span></li>
+        <li><span class="em">string</span></li>
+        <li><span class="em">array</span></li>
+        <li><span class="em">object</span></li>
+        <li><span class="em">NULL</span></li>
+      </ol>
+
       <span class="em"></span>：
       <p>
 
       </p>
+      <ol>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+      </ol>
+
       <span class="em"></span>：
       <p>
 
       </p>
+      <ol>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+      </ol>
+
       <span class="em"></span>：
       <p>
 
       </p>
+      <ol>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+      </ol>
     </details>
 
     <details>
@@ -139,7 +253,7 @@
       </p>
       <span class="em">全局配置文件</span>：
       <p>
-        路径：/config/config.php
+        路径：/app/config/config.php
       </p>
       <p>
         作用于整个应用。
@@ -162,9 +276,20 @@
 
     <details>
       <summary>DAO</summary>
+      <p>
+        dao 主要是几个静态方法、静态属性，如下：
+      </p>
       <span class="em"></span>：
       <p>
 
+      </p>
+      <span class="em"></span>：
+      <p>
+
+      </p>
+      <span class="em">sql 构造器</span>：
+      <p>
+        sql 构造器是我自己的创意，从过去的使用经验看，相比框架封装好的 api，我总是更倾向于写原生 sql，但原生 sql 写起来又稍有些麻烦，便封装了 sql 构造器这么个东西用于根据条件来生成 sql。包含以下几个方法
       </p>
       <span class="em"></span>：
       <p>
@@ -183,7 +308,7 @@
       </p>
       <span class="em">全局公共函数</span>：
       <p>
-        路径：/publicFunc/文件名
+        路径：/app/publicFunc/文件名
       </p>
       <p>
         作用于整个应用。
@@ -200,7 +325,7 @@
     <details>
       <summary>中间件</summary>
       <p>
-        路径：/middleware/文件名
+        路径：/app/middleware/文件名
       </p>
       <p>
         <span class="em">中间件是个类文件，可以有很多个中间件</span>。中间件必须在 config 文件（全局、模块都可以）的 'middleware' 中进行配置才能生效，写法如下：
@@ -216,18 +341,12 @@
     </details>
 
     <details>
-      <summary></summary>
-      <span class="em"></span>：
+      <summary>挂载插件</summary>
       <p>
-
+        路径：/plugIn/文件名
       </p>
-      <span class="em"></span>：
       <p>
-
-      </p>
-      <span class="em"></span>：
-      <p>
-
+        插件应该是一个或多个类文件，统一放在 plugIn 目录下，使用时框架会自动加载其类文件。
       </p>
     </details>
   </div>

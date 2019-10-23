@@ -11,8 +11,9 @@ $config = [
     'user' => 'root',                    // 管理员账户
     'pwd' => '123',                      // 密码
     'charset' => 'utf8',                 // 编码
-    'dbname' => '',                      // 数据库名
-    'prefix' => '',                      // 表前缀
+    'dbname' => 'myboard',               // 数据库名
+    'front' => '',                       // 表前缀
+    'behind' => '',                      // 表后缀
   ],
 
   // 系统配置
@@ -26,9 +27,14 @@ $config = [
     'public.php'
   ],
 
+  // 项目 URL
+  'URL' => [
+    'http://rw.com/'
+  ],
+
   // 配置中间件，执行顺序与数组顺序相同，每个元素依次是类名、方法名
   'middlewareFile' => [
     ['test', 'testFunc']
-  ]
+  ],
 ];
 

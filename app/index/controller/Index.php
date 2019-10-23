@@ -1,13 +1,13 @@
 <?php
 namespace app\index;
 
-class index{
-  public function index(){
-    return '';
-  }
+use \core\dao;
+use \core\publicController;
 
-  public function test(){
-    return 'test';
+class index extends publicController {
+
+  public function index() {
+    return '';
   }
 }
 

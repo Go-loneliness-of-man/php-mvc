@@ -5,6 +5,6 @@ namespace middleware;
 class test {
 
     public static function testFunc($request = []) {
-        dump($request);
+        // dump($request);
     }
 }

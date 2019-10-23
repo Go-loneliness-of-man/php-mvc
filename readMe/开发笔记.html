@@ -4,8 +4,7 @@
 <head>
     <title></title>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="ls.css">
     <style>
 
@@ -17,29 +16,29 @@
     <div id="body">
         <h2>已实现</h2>
         <ol>
-            <li>路由</li>
+            <li>路由，支持 params 写法</li>
             <li>分布式配置文件、公共函数</li>
             <li>中间件</li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-        </ol>
-        <h2>在开发</h2>
-        <ol>
-            <li>默认路由、路由注册的 params 传参方式</li>
-            <li></li>
-            <li></li>
-        </ol>
-        <h2>待开发</h2>
-        <ol>
             <li>dao</li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ol>
+        <h2>在实现</h2>
+        <ol>
             <li>公共控制器、服务、模型</li>
-            <li>实现可挂载插件（挂在三个公共类上？）</li>
-            <li>封装 request 类</li>
-            <li>实现 cookie、session</li>
+            <li>在公共控制器上实现模板引擎</li>
+            <li></li>
+            <li></li>
+        </ol>
+        <h2>待实现</h2>
+        <ol>
+            <li>封装 cookie、session</li>
+            <li>实现插件可配置</li>
+            <li></li>
             <li></li>
         </ol>
         <details>
@@ -64,7 +63,7 @@
             </p>
             <span class="em">路由注册</span>：
             <p>
-
+                分路由配置、路由匹配两步，路由配置加载个配置文件即可，路由匹配的要点是去掉 params 参数进行比较。
             </p>
         </details>
         <details>

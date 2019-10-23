@@ -15,8 +15,8 @@ class app {
   // 入口方法
   public static function start() {
     self::setPath();                                      // 定义路径常量
-    self::setAutoLoad();                                  // 开启自动加载
     self::setUrl();                                       // 解析 URL
+    self::setAutoLoad();                                  // 开启自动加载
     self::setConfig();                                    // 加载配置文件
     self::setError();                                     // 配置错误控制
     self::setPublicFunc();                                // 加载公共函数
@@ -27,24 +27,24 @@ class app {
   // 定义路经常量，包括框架基本目录路径，各个模块的控制器模型视图目录路径。
   private static function setPath() {
     define('APP_PATH',    ROOT_PATH.'app/');              // 应用目录
-    define('CONFIG_PATH', ROOT_PATH.'config/');           // 全局配置文件目录
     define('CORE_PATH',   ROOT_PATH.'core/');             // 框架核心目录
-    define('VENDOR_PATH', ROOT_PATH.'vendor/');           // 插件目录
-    define('PUBLICFUNC_PATH', ROOT_PATH.'publicFunc/');   // 公共函数目录
-    define('MIDDLEWARE_PATH', ROOT_PATH.'middleware/');   // 中间件目录
-    define('URL',         'http://mvc.com/');             // 基本 URL
+    define('PLUGIN_PATH', ROOT_PATH.'plugIn/');           // 插件目录
+    define('CONFIG_PATH', APP_PATH.'config/');            // 全局配置文件目录
+    define('PUBLICFUNC_PATH', APP_PATH.'publicFunc/');    // 公共函数目录
+    define('MIDDLEWARE_PATH', APP_PATH.'middleware/');    // 中间件目录
   }
 
   // 自动加载类的方法，包括 core、模块的控制器和模型类、vendor 内的类文件，每次接收一个类名
   private static function setAutoLoadFunction($class) {
     $class = basename($class);                            // 去掉命名空间前缀，只保留类名
 
-    // 加载各个类
-    file_exists(CORE_PATH.$class.'.php')                  ?   include_once(CORE_PATH.$class.'.php')                   :   0;// 加载核心类，core
-    file_exists(APP_PATH.M.'/controller/'.$class.'.php')  ?   include_once(APP_PATH.M.'/controller/'.$class.'.php')   :   0;// 加载模块控制器
-    file_exists(APP_PATH.M.'/model/'.$class.'.php')       ?   include_once(APP_PATH.M.'/model/'.$class.'.php')        :   0;// 加载模块模型
-    file_exists(MIDDLEWARE_PATH.$class.'.php')            ?   include_once(MIDDLEWARE_PATH.$class.'.php')             :   0;// 加载中间件类，middleware
-    file_exists(VENDOR_PATH.$class.'.php')                ?   include_once(VENDOR_PATH.$class.'.php')                 :   0;// 加载插件类，vendor
+    // 依次判断加载核心类、控制器类、模型类、服务类、中间件类、插件类
+    file_exists(CORE_PATH.$class.'.php')                    ?   include_once(CORE_PATH.$class.'.php')                     :   0;// 加载框架核心类，core
+    file_exists(APP_PATH.M.'\/controller\/'.$class.'.php')  ?   include_once(APP_PATH.M.'\/controller\/'.$class.'.php')   :   0;// 加载模块控制器
+    file_exists(APP_PATH.M.'\/model\/'.$class.'.php')       ?   include_once(APP_PATH.M.'\/model\/'.$class.'.php')        :   0;// 加载模块模型
+    file_exists(APP_PATH.M.'\/service\/'.$class.'.php')     ?   include_once(APP_PATH.M.'\/service\/'.$class.'.php')      :   0;// 加载模块服务
+    file_exists(MIDDLEWARE_PATH.$class.'.php')              ?   include_once(MIDDLEWARE_PATH.$class.'.php')               :   0;// 加载中间件类，middleware
+    file_exists(PLUGIN_PATH.$class.'.php')                  ?   include_once(VENDOR_PATH.$class.'.php')                   :   0;// 加载插件类，vendor
   }
 
   // 将自动加载方法注册到 php 内置的自动加载栈
@@ -54,14 +54,21 @@ class app {
 
   // 解析 URL 分配路由，默认路由 M、C、A 依次代表模块（module）、控制器（controller）、操作（action）
   private static function setUrl() {
-    $flag = route::router($_SERVER['PATH_INFO']);        // 判断是否是已注册的路由
-    if($flag) {                                          // 若不是已注册路由，解析为默认路由
-      $path = isset($_SERVER['PATH_INFO']) ? explode('/', $_SERVER['PATH_INFO']) : [];    // 切割路由
+    include_once(CORE_PATH.'route.php');                  // 加载路由类
+    $flag = isset($_SERVER['PATH_INFO']) ? route::router($_SERVER['PATH_INFO']) : 1;   // 判断是否是已注册的路由
 
-      // 定义模块、控制器、操作为常量
+    // 不是已注册路由，解析为默认路由
+    if($flag) {
+      $path = isset($_SERVER['PATH_INFO']) ? explode('/', $_SERVER['PATH_INFO']) : []; // 切割路由
       define('M', isset($path[1]) ? $path[1] : 'index');  // 默认 index 模块
       define('C', isset($path[2]) ? $path[2] : 'index');  // 默认 index 控制器
       define('A', isset($path[3]) ? $path[3] : 'index');  // 默认 index 操作
+
+      // 若模块不存在，抛出错误
+      if(!file_exists(APP_PATH.@$path[1])) {
+        echo 'error：不存在模块目录 '.APP_PATH."$path[1]，字符串“".$_SERVER['PATH_INFO'].'” 也不是已注册的路由';
+        exit;
+      }
     }
   }
 
@@ -73,9 +80,7 @@ class app {
     include(APP_PATH.M.'/config.php');                    // 加载模块配置文件
 
     // 用模块配置覆盖全局配置的部分参数
-    foreach($$m as $k => $v) {
-      $config[$k] = $$m[$k];
-    }
+    foreach($$m as $k => $v)  $config[$k] = $$m[$k];
   }
 
   // 配置错误控制
@@ -89,7 +94,7 @@ class app {
   private static function setPublicFunc() {
     global $config;                                       // 引入全局变量 config 到当前函数作用域
     for($i = 0, $c = count($config['publicFuncFile']); $i < $c; $i++)                     // 加载所有公共函数文件
-      file_exists(APP_PATH.M.'/'.$config['publicFuncFile'][$i]) ?
+      file_exists(APP_PATH.M.'/'.$config['publicFuncFile'][$i]) ?                         // 判断是否存在模块同名的模块公共函数
       include_once(APP_PATH.M.'/'.$config['publicFuncFile'][$i]) :
       include_once(PUBLICFUNC_PATH.$config['publicFuncFile'][$i]);
   }
