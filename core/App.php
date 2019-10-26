@@ -1,7 +1,7 @@
 <?php
 
 // 命名空间
-namespace core;
+namespace app\core;
 
 // 安全判定，若请求不是来自入口文件，跳转回入口文件，通过 defined() 判断一个常量是否存在
 if(!defined('ASINDEX')) {
@@ -34,24 +34,6 @@ class app {
     define('MIDDLEWARE_PATH', APP_PATH.'middleware/');    // 中间件目录
   }
 
-  // 自动加载类的方法，包括 core、模块的控制器和模型类、vendor 内的类文件，每次接收一个类名
-  private static function setAutoLoadFunction($class) {
-    $class = basename($class);                            // 去掉命名空间前缀，只保留类名
-
-    // 依次判断加载核心类、控制器类、模型类、服务类、中间件类、插件类
-    file_exists(CORE_PATH.$class.'.php')                    ?   include_once(CORE_PATH.$class.'.php')                     :   0;// 加载框架核心类，core
-    file_exists(APP_PATH.M.'\/controller\/'.$class.'.php')  ?   include_once(APP_PATH.M.'\/controller\/'.$class.'.php')   :   0;// 加载模块控制器
-    file_exists(APP_PATH.M.'\/model\/'.$class.'.php')       ?   include_once(APP_PATH.M.'\/model\/'.$class.'.php')        :   0;// 加载模块模型
-    file_exists(APP_PATH.M.'\/service\/'.$class.'.php')     ?   include_once(APP_PATH.M.'\/service\/'.$class.'.php')      :   0;// 加载模块服务
-    file_exists(MIDDLEWARE_PATH.$class.'.php')              ?   include_once(MIDDLEWARE_PATH.$class.'.php')               :   0;// 加载中间件类，middleware
-    file_exists(PLUGIN_PATH.$class.'.php')                  ?   include_once(VENDOR_PATH.$class.'.php')                   :   0;// 加载插件类，vendor
-  }
-
-  // 将自动加载方法注册到 php 内置的自动加载栈
-  private static function setAutoLoad() {
-    spl_autoload_register(array(__CLASS__, 'setAutoLoadFunction'));
-  }
-
   // 解析 URL 分配路由，默认路由 M、C、A 依次代表模块（module）、控制器（controller）、操作（action）
   private static function setUrl() {
     include_once(CORE_PATH.'route.php');                  // 加载路由类
@@ -70,6 +52,23 @@ class app {
         exit;
       }
     }
+  }
+
+  // 自动加载类的方法，包括 core、模块的控制器和模型类、vendor 内的类文件，每次接收一个类名
+  private static function setAutoLoadFunction($class) {
+    $class = basename($class);                            // 去掉命名空间前缀，只保留类名
+
+    // 依次判断加载核心类、控制器类、模型类、服务类、中间件类、插件类
+    file_exists(CORE_PATH.$class.'.php')                    ?   include_once(CORE_PATH.$class.'.php')                     :   0;// 加载框架核心类，core
+    file_exists(APP_PATH.M.'\/controller\/'.$class.'.php')  ?   include_once(APP_PATH.M.'\/controller\/'.$class.'.php')   :   0;// 加载模块控制器
+    file_exists(APP_PATH.M.'\/model\/'.$class.'.php')       ?   include_once(APP_PATH.M.'\/model\/'.$class.'.php')        :   0;// 加载模块模型
+    file_exists(APP_PATH.M.'\/service\/'.$class.'.php')     ?   include_once(APP_PATH.M.'\/service\/'.$class.'.php')      :   0;// 加载模块服务
+    file_exists(MIDDLEWARE_PATH.$class.'.php')              ?   include_once(MIDDLEWARE_PATH.$class.'.php')               :   0;// 加载中间件类，middleware
+    file_exists(PLUGIN_PATH.$class.'.php')                  ?   include_once(VENDOR_PATH.$class.'.php')                   :   0;// 加载插件类，vendor
+  }
+  // 将自动加载方法注册到 php 内置的自动加载栈
+  private static function setAutoLoad() {
+    spl_autoload_register(array(__CLASS__, 'setAutoLoadFunction'));
   }
 
   // 加载配置文件
@@ -114,7 +113,7 @@ class app {
     $m = M;                                               // 取出便于拼接
     $c = C;
     $a = A;
-    $controller = "\\app\\$m\\$c";                        // 组成控制器名
+    $controller = "\\app\\$m\\controller\\$c";            // 组成控制器名
     $c = new $controller();                               // 实例化控制器
     return $c->$a();                                      // 调用操作并返回结果
   }

@@ -1,7 +1,7 @@
 <?php
 
 // 命名空间
-namespace core;
+namespace app\core;
 
 // 负责路由相关操作
 class route {

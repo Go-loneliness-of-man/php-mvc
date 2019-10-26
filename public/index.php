@@ -1,5 +1,8 @@
 <?php
 
+// 命名空间
+namespace app;
+
 // 入口标记
 define('ASINDEX', true);
 
@@ -10,4 +13,4 @@ define('ROOT_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 include_once(ROOT_PATH.'core/App.php');
 
 // 初始化并输出结果
-echo \core\App::start();
+echo core\App::start();

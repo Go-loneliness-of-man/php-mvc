@@ -1,7 +1,7 @@
 <?php
 
 // 命名空间
-namespace core;
+namespace app\core;
 use \PDO;
 use \PDOStatement;
 use \PDOException;
@@ -11,16 +11,16 @@ class dao {
 
   private static $pdo;                                                                             // 保存 pdo 对象
   private static $dao = NULL;                                                                      // 保存 dao 对象
-  public static $prepareSql = [];                                                                  // 保存预定义 sql
-  public $type;
-  public $host;
-  public $port;
-  public $user;
-  public $pwd;
-  public $charset;
-  public $dbname;
-  public $front;
-  public $behind;
+  protected static $prepareSql = [];                                                               // 保存预定义 sql
+  protected $type;
+  protected $host;
+  protected $port;
+  protected $user;
+  protected $pwd;
+  protected $charset;
+  protected $dbname;
+  protected $front;
+  protected $behind;
 
   // 私有 clone 方法，阻止 clone
   private function __clone() {}

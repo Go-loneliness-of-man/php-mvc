@@ -23,8 +23,10 @@
       </p>
       <span class="em">框架简介</span>：
       <p>
-        本框架主要供新手学习使用，rw 的<span class="em">大部分功能是我模仿自己用过的几个框架的创意</span>，但 99% 的代码实现均为原创（比如 .htaccess 文件我是直接拿了 tp5 的），模仿的只有创意，
-        当然我也加了一些自己的创意，比如 sql 构造器。这是我第一次写框架，肯定存在诸多不足，欢迎有想法的小伙伴提出改进意见，我会参考的。
+        rw 适合供新手学习使用，我做它的动力主要来源于兴趣，用别人的框架总有点不舒服，就想自己做个框架玩玩，之所以说它适合新手学习是因为<span class="em">它的源码注释详尽，
+        逻辑易懂</span>（至少我自己是这样认为的 ^_^），rw 的<span class="em">大部分功能是我模仿自己用过的几个框架的创意</span>，但 99% 的代码实现均为原创（.htaccess 文件我直接拿了
+        tp5 的），模仿的只有创意，实现思路是我自己的，当然我也加了一些自己的创意，比如公共控制器的 sql 构造器。这是我第一次写框架，肯定存在诸多不足，欢迎有想法的小伙伴提出改进意见，
+        互相交流学习。
       </p>
       <span class="em">新手指引</span>：
       <p>
@@ -36,10 +38,14 @@
         rw 注释详尽，<span class="em">建议对面向对象比较了解的同学学会基本使用后，直接看源码</span>。
       </p>
       <span class="em">框架约定</span>：
+      <p>
+        rw 的使用非常自由，需要注意的只有以下几条：
+      </p>
       <ol>
+        <li>命名空间与路径一致</li>
         <li>除常量外，文件、类、命名空间统一采用小驼峰</li>
         <li>所有类文件的文件名与类名相同，并且一个类文件只放一个类</li>
-        <li></li>
+        <li>数据表命名方式默认小写下划线，若不想这样做可以通过配置修改</li>
       </ol>
     </details>
 
@@ -120,15 +126,17 @@
     <details>
       <summary>控制器</summary>
       <p>
-        一个控制器的一般写法是：
+        路径：/app/模块名/controller/控制器名.php
+      </p>
+      <p>
+        一个控制器的一般写法应是：
       </p>
       <code>
         &lt;?php
-          namespace app\模块名;// 命名空间，与文件路径保持一致
+          namespace app\模块名\controller;                          // 命名空间，与文件路径保持一致
+          use \core\publicController;                               // 引用公共控制器
 
-          use \core\publicController;// 引用公共控制器
-
-          class index extends publicController {// 继承公共控制器
+          class index extends publicController {                    // 继承公共控制器
 
             public function 操作名() {
               函数体;
@@ -142,7 +150,7 @@
 
       <span class="em">get($isJson = 0, $convert = 1)</span>：
       <p>
-        获取请求参数，栗子：$var = $this->get();
+        封装 $_REQUEST，栗子：$var = $this->get();
       </p>
       <ol>
         <li><span class="em">$isJson</span>，是否作为 json 进行转换，若是 1 将请求参数作为 json 进行转换，默认 0。</li>
@@ -232,9 +240,32 @@
 
     <details>
       <summary>模型</summary>
-      <span class="em"></span>：
       <p>
-        数据表命名统一采用小写下划线，与 model 的小驼峰对应
+        路径：/app/模块名/model/数据表的小驼峰形式.php
+      </p>
+      <p>
+        一个控制器的一般写法应是：
+      </p>
+      <code>
+        &lt;?php
+        namespace app\模块名\model;                             // 命名空间，与文件路径保持一致
+        use app\core\publicModel;                               // 引用公共模型
+
+        class 模型名 extends publicModel {                      // 继承公共模型
+
+            public function test() {
+
+            }
+        }
+      </code>
+      <p>
+        如果你需要经常在某个数据表上进行一些重复操作，就可以使用 model 对其进行封装，model 是个类，负责与数据表一一映射。
+      </p>
+      <span class="em">表名、数据库名</span>：
+      <p>
+        model 会自动映射到与其类名（小驼峰）的小写下划线形式所对应的数据表，<span class="em">例如 demoName 会自动映射到数据表 demo_name</span>（如果你配置过
+        $config['database']['front']、$config['database']['behind']，则会自动加上前、后缀），如果想自定义表名，直接在 model 类上覆盖 table 属性即可。数据库名会默认读取
+        $config['database']['dbname']，若想自定义，同样直接在 model 类上覆盖 dbname 属性即可。
       </p>
       <span class="em"></span>：
       <p>
@@ -256,14 +287,26 @@
         路径：/app/config/config.php
       </p>
       <p>
-        作用于整个应用。
+        作用于整个应用，包含如下配置项：
       </p>
+      <ol>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+        <li><span class="em"></span>，。</li>
+      </ol>
       <span class="em">模块配置文件</span>：
       <p>
         路径：/app/模块名/config.php
       </p>
       <p>
-        用于为模块进行个性化配置，该文件会覆盖全局配置部分参数。格式固定：
+        用于为模块进行个性化配置，该文件会覆盖全局配置的参数，配置项与全局配置文件相同，格式如下：
       </p>
       <code>
           &lt;?php
@@ -277,7 +320,7 @@
     <details>
       <summary>DAO</summary>
       <p>
-        dao 主要是几个静态方法、静态属性，如下：
+        dao 是个类，应用了单例模式，<span class="em">分为静态方法和属性、普通方法和属性两部分</span>，静态方法和属性实现了 sql 构造器，普通方法和属性用于原生查询。普通方法和属性如下：
       </p>
       <span class="em"></span>：
       <p>
@@ -289,7 +332,7 @@
       </p>
       <span class="em">sql 构造器</span>：
       <p>
-        sql 构造器是我自己的创意，从过去的使用经验看，相比框架封装好的 api，我总是更倾向于写原生 sql，但原生 sql 写起来又稍有些麻烦，便封装了 sql 构造器这么个东西用于根据条件来生成 sql。包含以下几个方法
+        sql 构造器是我自己的创意，从过去的使用经验看，相比框架封装好的 api，我总是更倾向于写原生 sql，但原生 sql 写起来又稍有些麻烦，便封装了 sql 构造器这么个东西用于生成 sql。包含以下几个方法
       </p>
       <span class="em"></span>：
       <p>
@@ -328,7 +371,7 @@
         路径：/app/middleware/文件名
       </p>
       <p>
-        <span class="em">中间件是个类文件，可以有很多个中间件</span>。中间件必须在 config 文件（全局、模块都可以）的 'middleware' 中进行配置才能生效，写法如下：
+        <span class="em">中间件是个类文件，可以存在多个中间件</span>。中间件必须在 config 文件（全局、模块都可以）的 'middleware' 中进行配置才能生效，写法如下：
       </p>
       <code>
         'middleware' => [
@@ -336,7 +379,7 @@
         ]
       </code>
       <p>
-        中间件的执行顺序与在数组中的顺序相同，中间件不会被实例化，所以其<span class="em">方法必须是静态方法</span>，被默认传入 $_REQUEST 作为参数。
+        中间件的执行顺序与在数组中的顺序相同，中间件不会被实例化，所以其<span class="em">方法必须是静态方法</span>，被默认传入 $_REQUEST 作为第一个参数。
       </p>
     </details>
 
