@@ -5,7 +5,7 @@
   <title></title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <link rel="stylesheet" href="ls.css">
+  <link rel="stylesheet" href="sundry/ls.css">
   <style>
 
   </style>
@@ -18,22 +18,22 @@
       <summary>前言</summary>
       <span class="em">声明</span>：
       <p>
-        本框架由 <a target = "_blank" href="https://github.com/Go-loneliness-of-man">goLone</a> 个人开发，<span class="em">仅供新手学习交流使用</span>，
+        本框架由 <a target = "_blank" href="https://github.com/Go-loneliness-of-man">goLone</a> 个人开发，<span class="em">仅供学习交流使用</span>，
         相比成熟框架尚存在诸多缺陷，请勿用作商业用途，如若造成损失，概不负责 ╮(￣▽￣)╭
       </p>
       <span class="em">框架简介</span>：
       <p>
-        rw 适合供新手学习使用，我做它的动力主要来源于兴趣，用别人的框架总有点不舒服，就想自己做个框架玩玩，之所以说它适合新手学习是因为<span class="em">它的源码注释详尽，
-        逻辑易懂</span>（至少我自己是这样认为的 ^_^），rw 的<span class="em">大部分功能是我模仿自己用过的几个框架的创意</span>，但 99% 的代码实现均为原创（.htaccess 文件我直接拿了
-        tp5 的），模仿的只有创意，实现思路是我自己的，当然我也加了一些自己的创意，比如公共控制器的 sql 构造器。这是我第一次写框架，肯定存在诸多不足，欢迎有想法的小伙伴提出改进意见，
+        rw 适合新手学习使用，我做它的动力主要来源于兴趣，用别人的框架总有点不舒服，就想自己搞个框架玩玩，之所以说它适合新手学习是因为<span class="em">它的源码注释详尽，
+        逻辑易懂</span>（至少我自己是这么认为的 ^_^），rw 的<span class="em">大部分功能是我模仿自己用过的几个框架的创意</span>，但 99% 的代码实现均为原创（.htaccess 文件我直接拿了
+        tp5 的），模仿的只有创意，实现思路是我自己的，当然也有一些创意是我自己的，比如 dao 的大部分都是原创。这是我第一次写框架，肯定存在诸多不足，欢迎有想法的小伙伴提出改进意见，
         互相交流学习。
       </p>
-      <span class="em">新手指引</span>：
+      <span class="em">入门指引</span>：
       <p>
-        rw 基于 MVC 开发，但在 MVC 的基础上进行了一些拓展，目前拓展的部分包括 service、middleware，以下两张流程图分别表示了基本的 MVC 运行流程、rw 的运行流程：
+        rw 基于 MVC 开发，但在 MVC 的基础上进行了一些拓展，目前拓展的主要部分包括 service、middleware，以下两张流程图分别表示了基本的 MVC 运行流程、rw 的运行流程：
       </p>
-      <img src="MVC 框架基本运行流程.png">
-      <img src="RW 运行流程.png">
+      <img src="sundry/MVC 在 Web 下的基本运行流程.png">
+      <img src="sundry/rw 基本运行流程.png">
       <p>
         rw 注释详尽，<span class="em">建议对面向对象比较了解的同学学会基本使用后，直接看源码</span>。
       </p>
@@ -42,66 +42,76 @@
         rw 的使用非常自由，需要注意的只有以下几条：
       </p>
       <ol>
-        <li>命名空间与路径一致</li>
+        <li>命名空间与路径保持一致</li>
         <li>除常量外，文件、类、命名空间统一采用小驼峰</li>
         <li>所有类文件的文件名与类名相同，并且一个类文件只放一个类</li>
-        <li>数据表命名方式默认小写下划线，若不想这样做可以通过配置修改</li>
+        <li>数据表命名方式默认采用小写下划线，若不想这样做可通过自定义 model 属性进行修改</li>
       </ol>
     </details>
 
     <details>
       <summary>目录结构</summary>
       <code>
-          ├─app                                 // 应用目录
-          │  ├─config                           // 全局配置文件目录
-          │  │     ├─config.php                 // 全局配置文件
-          │  │     └─route.php                  // 路由配置文件
-          │  │
-          │  ├─index                            // 模块目录
-          │  │     ├─config.php                 // 模块配置文件
-          │  │     │
-          │  │     ├─controller                 // 模块控制器目录
-          │  │     │  └─index.php               // 控制器 index
-          │  │     │
-          │  │     ├─model                      // 模块模型目录
-          │  │     ├─service                    // 模块服务目录
-          │  │     └─view                       // 模块视图目录
-          │  │
-          │  ├─middleware                       // 中间件目录
-          │  │     └─test.php                   // 示例，可删
-          │  │
-          │  └─publicFunc                       // 公共函数目录
-          │        └─public.php                 // 公共函数文件，可以有很多个
-          │
-          ├─core                                // 框架核心目录
-          │  ├─app.php                          // 初始化文件
-          │  ├─dao.php                          // dao，数据库访问对象的类
-          │  ├─publicController.php             // 公共控制器类
-          │  ├─publicModel.php                  // 公共模型类
-          │  ├─publicService.php                // 公共服务类
-          │  └─route.php                        // 路由类
-          │
-          ├─plugIn                              // 插件目录
-          ├─public                              // 外部访问目录
-          │  ├─.htaccess                        // 分布式配置文件，用于配置 url 转发
-          │  └─index.php                        // 入口文件
-          │
-          └─readMe                              // 文档目录
-             ├─ls.css                           // 文档样式
-             ├─MVC 框架基本运行流程.png
-             ├─php-mvc 运行流程.png
-             ├─php-mvc 运行流程.xmind
-             ├─开发笔记.html
-             └─文档.html                        // 框架文档
-      </code>
-      <span class="em"></span>：
+        ├─app                                   // 应用目录
+        │  ├─config                             // 全局配置文件目录
+        │  │  ├─config.php                      // 全局配置文件
+        │  │  ├─dao.php                         // dao 预定义 sql 文件
+        │  │  └─route.php                       // 路由注册文件
+        │  │
+        │  ├─index                              // 示例，index 模块，可删
+        │  │  ├─config.php                      // index 模块配置文件，可选
+        │  │  │
+        │  │  ├─controller                      // 控制器目录
+        │  │  │  └─index.php                    // 示例，index 控制器
+        │  │  │
+        │  │  ├─model                           // 模型目录
+        │  │  │  └─demo.php                     // 示例，demo 模型文件
+        │  │  │
+        │  │  ├─service                         // 服务目录
+        │  │  │  └─demo.php                     // 示例，demo 服务文件
+        │  │  │
+        │  │  └─view                            // 视图目录
+        │  │     ├─demo.php                     // 示例，demo 视图文件
+        │  │     └─demo.view.php                // 被控制器模板引擎解析后的 demo 视图文件
+        │  │
+        │  ├─middleware                         // 中间件目录
+        │  │     └─test.php                     // 示例，test 中间件
+        │  │
+        │  └─publicFunc                         // 公共函数目录
+        │        ├─graph.php                    // rw 提供的库函数文件，用于常见图形操作
+        │        └─public.php                   // rw 提供的库函数文件，内含常用函数
+        │
+        ├─core                                  // 框架核心目录
+        │  ├─app.php                            // 初始化文件
+        │  ├─dao.php                            // dao
+        │  ├─publicController.php               // 公共控制器
+        │  ├─publicModel.php                    // 公共模型
+        │  ├─publicService.php                  // 公共服务
+        │  └─route.php                          // 路由
+        │
+        ├─plugIn                                // 插件目录
+        │  └─test.php                           // 示例，test 插件
+        │
+        ├─public                                // 外部访问目录
+        │  ├─.htaccess                          // 分布式配置文件，用于 URL 转发
+        │  └─index.php                          // 入口文件
+        │
+        └─readMe                                // 文档目录
+           ├─开发笔记.html
+           ├─文档.html
+           └─sundry                             // 杂项目录
+               ├─ls.css
+               ├─MVC 在 Web 下的基本运行流程.png
+               ├─MVC 在 Web 下的基本运行流程.xmind
+               ├─rw 基本运行流程.png
+               └─rw 基本运行流程.xmind
+      </code><br>
+      <span class="em">命名空间</span>：
       <p>
-
+        rw 包含 app、core、plugIn 三个命名空间，app 下有 middleware 和模块（例如 index 模块的命名空间就是 app\index），而每个模块又包含 controller、model、service 三个命名空间，
+        core 下目前没有子命名空间，只有类，plagIn 为预留给插件的命名空间。下图形象的表示了整个框架命名空间的结构：
       </p>
-      <span class="em"></span>：
-      <p>
-
-      </p>
+      <img src="sundry/rw 命名空间结构.png">
     </details>
 
     <details>
@@ -144,17 +154,18 @@
             }
           }
       </code>
+
+      <span class="em">公共控制器</span>：
       <p>
         控制器一般包含参数过滤、调用 service、渲染视图等操作，因此我为公共控制器实现了以下方法：
       </p>
-
       <span class="em">get($isJson = 0, $convert = 1)</span>：
       <p>
         封装 $_REQUEST，栗子：$var = $this->get();
       </p>
       <ol>
         <li><span class="em">$isJson</span>，是否作为 json 进行转换，若是 1 将请求参数作为 json 进行转换，默认 0。</li>
-        <li><span class="em">$convert</span>，是否进行类型转换，若是 1 将仅包含数字的字符串转换为 integer，默认为 1，若 $isJson 为 1 则不转换。</li>
+        <li><span class="em">$convert</span>，是否进行类型转换，若是 1 将仅包含数字的字符串转换为 integer，默认为 1。</li>
       </ol>
 
       <span class="em">jump($msg, $m = M, $c = C, $a = A, $time = 5, $params = [])</span>：
@@ -191,46 +202,45 @@
         <li><span class="em">NULL</span></li>
       </ol>
 
-      <span class="em"></span>：
+      <span class="em">loadVar($key, $value)</span>：
       <p>
-
+        属于公共控制器内置的模板引擎，用于接收渲染视图所需变量。
       </p>
       <ol>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
+        <li><span class="em">$key</span>，渲染时变量的键。</li>
+        <li><span class="em">$value</span>，渲染时变量的值。</li>
       </ol>
 
-      <span class="em"></span>：
+      <span class="em">show($view)</span>：
       <p>
-
+        属于公共控制器内置的模板引擎，用于渲染视图，$view 是视图文件名，不带 .php 后缀。
       </p>
-      <ol>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-      </ol>
-
-      <span class="em"></span>：
-      <p>
-
-      </p>
-      <ol>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-      </ol>
     </details>
 
     <details>
       <summary>服务</summary>
-      <span class="em"></span>：
       <p>
-
+        路径：/app/模块名/service/服务名.php
       </p>
-      <span class="em"></span>：
       <p>
+        一个服务的一般写法应是：
+      </p>
+      <code>
+        &lt;?php
+        namespace app\模块名\service;                           // 命名空间，与文件路径保持一致
+        use \core\publicService;                                // 引用公共服务
+        use \app\模块名\model\模型名 as 重命名后的模型名;         // 引用模型，当模型与当前服务重名时，用 as 进行重命名
 
+        class 服务名 extends publicService {
+
+            public function demo() {
+                // $model = new demoModel();
+                return '你调用了服务 demo，服务 demo 调用了模型 demo';
+            }
+        }
+      </code>
+      <p>
+        服务用于将传统 mvc 的业务逻辑从 controller 中抽离出来，不是必要操作，如果你认为不需要，可以不写它，由于想不到该加什么功能，我目前没有为公共服务实现任何方法。
       </p>
       <span class="em"></span>：
       <p>
@@ -244,12 +254,12 @@
         路径：/app/模块名/model/数据表的小驼峰形式.php
       </p>
       <p>
-        一个控制器的一般写法应是：
+        rw 的 model 是基于 PDO 的，所以使用前必须在 php.ini 开启 PDO，一个模型的一般写法应是：
       </p>
       <code>
         &lt;?php
         namespace app\模块名\model;                             // 命名空间，与文件路径保持一致
-        use app\core\publicModel;                               // 引用公共模型
+        use \core\publicModel;                                  // 引用公共模型
 
         class 模型名 extends publicModel {                      // 继承公共模型
 
@@ -259,7 +269,7 @@
         }
       </code>
       <p>
-        如果你需要经常在某个数据表上进行一些重复操作，就可以使用 model 对其进行封装，model 是个类，负责与数据表一一映射。
+        如果你需要经常在某个数据表上进行一些重复操作，就可以使用 model 对其进行封装，model 是个类，负责与数据表互相映射。
       </p>
       <span class="em">表名、数据库名</span>：
       <p>
@@ -267,18 +277,44 @@
         $config['database']['front']、$config['database']['behind']，则会自动加上前、后缀），如果想自定义表名，直接在 model 类上覆盖 table 属性即可。数据库名会默认读取
         $config['database']['dbname']，若想自定义，同样直接在 model 类上覆盖 dbname 属性即可。
       </p>
-      <span class="em"></span>：
+      <span class="em">公共模型 publicModel</span>：
       <p>
-
+        如果你的 model 不继承公共模型 publicModel，它就只是个普通的类，这里说的所有关于 model 的内容都是在 publicModel 上实现的。
       </p>
-      <span class="em"></span>：
       <p>
-
+        publicModel 具有以下属性、方法：
+      </p>
+      <ol>
+        <li><span class="em">dao</span>，保存了 dao 实例的引用。</li>
+        <li><span class="em">dbname</span>，映射到的数据库名。</li>
+        <li><span class="em">table</span>，映射到的数据表名。</li>
+        <li><span class="em">struct</span>，数据表的创建语句。</li>
+        <li><span class="em">fields</span>，数据表的所有字段。</li>
+        <li><span class="em">primaryKey</span>，数据表的主键。</li>
+      </ol>
+      <span class="em">create($data)</span>：
+      <p>
+        向数据表插入记录，返回主键，若不存在主键则返回插入条数，$data 是一维关联数组时插入一条，是二维关联数组时插入多条。
+      </p>
+      <span class="em">delete($where)</span>：
+      <p>
+        删除记录，返回删除条数，$where 为关联数组，作为删除的判断条件。（出于安全起见，我特意设置 $where 为必传参数，避免因疏忽而造成损失）
+      </p>
+      <span class="em">update($key, $value, $where)</span>：
+      <p>
+        修改记录，返回修改条数，$key、$value 为修改的字段名、值，$where 为关联数组，作为修改的判断条件。（出于安全起见，我特意设置 $where 为必传参数，避免因疏忽而造成损失）
+      </p>
+      <span class="em">get($primaryKey)</span>：
+      <p>
+        根据主键查询记录，只需要传值，不需要传字段名。栗子：$this->get([1, 2, 3, 4, 5]); 就可以查出主键是 1、2、3、4、5 的记录。
       </p>
     </details>
 
     <details>
-      <summary>配置文件</summary>
+      <summary>配置文件目录</summary>
+      <p>
+        目前包括配置文件、dao 预定义 sql 文件、路由注册文件。
+      </p>
       <p>
         支持<span class="em">全局配置文件、模块配置文件</span>。
       </p>
@@ -287,67 +323,130 @@
         路径：/app/config/config.php
       </p>
       <p>
-        作用于整个应用，包含如下配置项：
+        作用于整个应用，目前包含如下配置项：
       </p>
       <ol>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
-        <li><span class="em"></span>，。</li>
+        <li><span class="em">database</span>，数据库配置。</li>
+        <li><span class="em">system</span>，php 系统配置。</li>
+        <li><span class="em">publicFuncFile</span>，要加载的框架公共函数文件名。</li>
+        <li><span class="em">URL</span>，应用地址。</li>
+        <li><span class="em">middlewareFile</span>，启用的中间件。</li>
       </ol>
       <span class="em">模块配置文件</span>：
       <p>
         路径：/app/模块名/config.php
       </p>
       <p>
-        用于为模块进行个性化配置，该文件会覆盖全局配置的参数，配置项与全局配置文件相同，格式如下：
+        用于为模块单独进行配置，该文件是可选的，该文件会覆盖全局配置的参数，配置项与全局配置文件相同，格式如下：
       </p>
       <code>
-          &lt;?php
+        &lt;?php
 
-          $模块名 = [                               // 配置变量名与模块名保持一致
+        $模块名 = [                               // 配置变量名与模块名保持一致
 
-          ];
-      </code>
+        ];
+      </code><br>
+      <span class="em">dao 预定义 sql 文件</span>：
+      <p>
+        路径：/app/config/dao.php
+      </p>
+      <p>
+        用于保存 dao::define() 内预定义的 sql。
+      </p>
+      <span class="em">路由注册文件</span>：
+      <p>
+        路径：/app/config/route.php
+      </p>
+      <p>
+        用于路由注册，具体在上文的路由部分中已描述过了。
+      </p>
     </details>
 
     <details>
       <summary>DAO</summary>
       <p>
-        dao 是个类，应用了单例模式，<span class="em">分为静态方法和属性、普通方法和属性两部分</span>，静态方法和属性实现了 sql 构造器，普通方法和属性用于原生查询。普通方法和属性如下：
+        <span class="em">目前 rw 的 dao 仅考虑了 mysql</span>。
       </p>
-      <span class="em"></span>：
       <p>
-
+        dao 是个类，应用单例模式，dao 主要<span class="em">分为静态方法和属性、普通方法和属性两部分</span>，静态方法和属性实现了 sql 构造器，普通方法和属性用于原生查询。
       </p>
-      <span class="em"></span>：
+      <span class="em">static function get($db = [])</span>：
       <p>
-
+        用于获取 dao 引用
       </p>
+      <span class="em">普通属性</span>：
+      <p>
+        <span class="em">$type、$host、$port、$user、$pwd、$charse、$dbname、$front、$behind</span>，保存了 config 内的数据库配置。
+      </p>
+      <span class="em">普通方法</span>：
+      <ol>
+        <li><span class="em">query($sql, $unset = 1)</span>，执行 sql 或查询多条记录，$unset 决定是否删掉数字下标的元素。</li>
+        <li><span class="em">one($sql, $unset = 1)</span>，执行 sql 或查询单条记录，$unset 决定是否删掉数字下标的元素。</li>
+        <li><span class="em">exec($sql)</span>，执行 sql 并返回受影响的记录数。</li>
+      </ol>
       <span class="em">sql 构造器</span>：
       <p>
-        sql 构造器是我自己的创意，从过去的使用经验看，相比框架封装好的 api，我总是更倾向于写原生 sql，但原生 sql 写起来又稍有些麻烦，便封装了 sql 构造器这么个东西用于生成 sql。包含以下几个方法
+        sql 构造器是我的创意，从过去的使用经验看，相比框架封装好的 api，我总是更倾向于写原生 sql，但原生 sql 写起来又稍有些麻烦，便封装了 sql 构造器这么个东西用于生成 sql。
+        包含以下几个静态属性、方法：
       </p>
-      <span class="em"></span>：
+      <span class="em">dao::prepareSql</span>：
       <p>
-
+        保存上一次执行 dao::define() 时执行的 sql 数组。
       </p>
-      <span class="em"></span>：
+      <span class="em">sql 构造方法</span>：
       <p>
-
+        共包含 select($params)、select_one($params)、insert($params)、update($params)、delete($params)、define($key, $params = [], $cover = []) 等六个静态方法，由于参数较多且关系较复杂，我采用关联数组进行传参，
+        并用如下这段注释解释其用法：
       </p>
+      <code>
+  /*  *************************************************************************** sql 构造器 *************************************************************************************
+  **  支持大多数 sql 关键字，采用 php 关联数组传参，基于 sql 关键字设计参数，可选择直接返回 sql 语句（用于实现子查询、调试）。目前支持 6 个方法：
+  **  select()、select_one()、define()、insert()、update()、delete()，作用依次是查询、查询一条、预定义查询（是在函数内配置好的数组，使用时可直接调用）、
+  **  增、改、删
+
+  **  作者 bilibili id: --刃舞--
+
+  **  select(): 用于构造 SELECT 语句，参数如下。
+  **  field:      string                                                                            必须，要获取的字段
+  **  from:       string 或 [[ string, string, string, string ], [ string, string, string ]]        必须，数据源，当传入数组时会自动进行关联查询，关联查询时，第一个元素为表 1、表2、条件、关联类型（可选，默认 left join），之后为表名、条件、关联类型（可选）
+  **  where:      string 或 [[ string, string, string ], [ string, string, string]]                 可选，where 子句，每个子数组依次是左值、关系运算符和右值、逻辑运算符（可选，默认 AND）
+  **  group:      string                                                                            可选，分组字段名
+  **  distinct:   bool                                                                              可选，是否进行去重
+  **  order:      string                                                                            可选，用于排序的字段名
+  **  limit:      [ number, number ]                                                                可选，获取的记录区间，可以只传第一个
+  **  onlySql:    bool                                                                              可选，是否直接返回 sql 字符串
+
+  **  select_one():  专用于查询单条记录，参数与 select() 相同。
+
+  **  define(): 用于定义、执行预定义的查询。
+  **  key:        string                                                                             必须，预定义 sql 在 prepareSql 中的 key
+  **  params:     []                                                                                 可选，其属性是预定义 sql 需要的参数，其内多了个元素 one，用于判断调用 select_one() 还是 select()
+  **  cover:      []                                                                                 可选，用于覆盖预定义 sql 的属性，使其更加灵活
+
+  **  insert(): 用于构造 INSERT 语句，参数如下：
+  **  table:      string                                                                             必须，要插入的表名
+  **  data:       [ key => val ]                                                                     必须，要插入的 key/val 对
+  **  onlySql:    bool                                                                               可选，是否直接返回 sql 字符串
+
+  **  update(): 用于构造 UPDATE 语句，参数如下：
+  **  table:      string                                                                             必须，要修改的表名
+  **  key:        string                                                                             必须，要修改的字段名
+  **  value:      string 或 number                                                                   必须，要修改的值
+  **  where:      string 或 [[ string, string, string ], [ string, string, string]]                  可选，where 子句，与 select 相同
+  **  onlySql:    bool                                                                               可选，是否直接返回 sql 字符串
+
+  **  delete(): 用于构造 DELETE 语句，参数如下：
+  **  table:      string                                                                             必须，要删除的表名
+  **  where:      string 或 [[ string, string, string ], [ string, string, string]]                  可选，where 子句，与 select 相同
+  **  onlySql:    bool                                                                               可选，是否直接返回 sql 字符串
+  */
+      </code>
     </details>
 
     <details>
       <summary>公共函数</summary>
       <p>
-        支持<span class="em">全局公共函数、模块公共函数</span>，需在 config 文件（全局、模块都可以）内配置，将文件名加入 'publicFuncFile' 即可。
+        支持<span class="em">全局公共函数、模块公共函数</span>，需在 config 文件（全局、模块都可以）内配置才会被加载，将文件名加入 'publicFuncFile' 即可。
       </p>
       <span class="em">全局公共函数</span>：
       <p>
@@ -386,10 +485,10 @@
     <details>
       <summary>挂载插件</summary>
       <p>
-        路径：/plugIn/文件名
+        路径：/plugIn/插件名.php
       </p>
       <p>
-        插件应该是一个或多个类文件，统一放在 plugIn 目录下，使用时框架会自动加载其类文件。
+        插件应是一个或多个类文件，统一放在 plugIn 目录下，使用时框架会自动加载其类文件。
       </p>
     </details>
   </div>

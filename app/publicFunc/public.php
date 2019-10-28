@@ -136,3 +136,11 @@ function convertNaming($name) {
 //   return 1;
 // }
 
+// 生成随机字符串
+function randString(&$s, $len) {
+  $c = 'abcdefghijklmnopqistuvwxyzABCDEFGHJKLMNOPQISTUVWXYZ23456789';   //字符表
+  for($i = 0; $i < $len; $i++)   $s = $s.$c[mt_rand(0,59)];             //拼接随机字符串
+  return $s;
+}
+
+

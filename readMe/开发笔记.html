@@ -5,7 +5,7 @@
     <title></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="ls.css">
+    <link rel="stylesheet" href="sundry/ls.css">
     <style>
 
     </style>
@@ -17,12 +17,10 @@
         <h2>已实现</h2>
         <ol>
             <li>路由，支持 params 写法</li>
-            <li>分布式配置文件、公共函数</li>
+            <li>分布式配置文件、公共函数文件</li>
             <li>中间件</li>
             <li>dao</li>
             <li>公共控制器</li>
-            <li></li>
-            <li></li>
             <li></li>
             <li></li>
             <li></li>
@@ -36,8 +34,7 @@
         </ol>
         <h2>待实现</h2>
         <ol>
-            <li>公共服务（不知该有哪些功能，搁置 ing 。。。）</li>
-            <li>封装 cookie、session</li>
+            <li>公共服务（不知该实现哪些功能，搁置 ing 。。。）</li>
             <li></li>
             <li></li>
         </ol>
@@ -46,7 +43,7 @@
             <span class="em">url 转发</span>：
             <p>
                 要实现路由，就必须进行 url 重写（也称 pathinfo 模式），而 url 重写是建立在 url 转发的基础上的，url 转发由 apache 的 mod_rewrite.so
-                模块（较新版本的 apache 默认开启该模块）提供，然后在网站根目录新建 .htaccess 文件，粘贴如下代码：
+                模块（较新版本的 apache 默认开启该模块）提供，在网站根目录新建 .htaccess 文件，粘贴如下代码：
             </p>
             <code>
                 &lt;IfModule mod_rewrite.c&gt;
@@ -63,9 +60,18 @@
             </p>
             <span class="em">路由注册</span>：
             <p>
-                分路由配置、路由匹配两步，路由配置加载个配置文件即可，路由匹配的要点是去掉 params 参数进行比较。
+                主要分路由配置、路由匹配两步，路由配置加载个配置文件即可，<span class="em">路由匹配的要点是去掉 params 参数进行比较</span>。
             </p>
         </details>
+
+        <details>
+            <summary>publicModel 实现</summary>
+            <span class="em">获取子类 model 的类名</span>：
+            <p>
+                当子类未定义构造函数时，php 就会调用父类的构造函数，此时在父类的构造函数内通过 basename(get_class($this)) 就可以获取到子类的类名进行操作。
+            </p>
+        </details>
+
         <details>
             <summary></summary>
             <span class="em"></span>：

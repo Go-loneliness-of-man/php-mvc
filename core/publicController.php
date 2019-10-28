@@ -1,7 +1,7 @@
 <?php
 
 // 命名空间
-namespace app\core;
+namespace core;
 
 // 抽象类，只能被继承，不能实例化
 abstract class publicController {
@@ -48,7 +48,7 @@ abstract class publicController {
   public $templateVar = [];
 
   // 接收变量到控制器内部
-  public function loadVar($key, $value = 0) {
+  public function loadVar($key, $value) {
     if(is_array($key))                                              // 判断是否批量传参
       foreach($key as $k => $v)                                     // 批量接收
         $this->templateVar[$k] = $v;                                // 接收一次
@@ -70,7 +70,7 @@ abstract class publicController {
       fclose($file);                                                // 关闭文件
     }
 
-    // 读入视图文件
+    // 包含视图文件
     include_once(APP_PATH.M.'/view/'.$view.'.view.php');
   }
 }

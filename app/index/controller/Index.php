@@ -2,15 +2,20 @@
 
 // 命名空间
 namespace app\index\controller;
-use app\core\publicController;
-use app\index\model\demo;
+use \core\publicController;
+use \app\index\service\demo;
+use \plugIn\test;
 
 class index extends publicController {
 
   public function index() {
-    $model = new demo();
-    $model->demo();
-    return 1;
+    $service = new demo();
+    return $service->demo();
+  }
+
+  public function plugIn() {
+    $plugIn = new test();
+    return $plugIn->test();
   }
 
   public function test() {

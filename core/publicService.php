@@ -1,11 +1,14 @@
 <?php
 
 // 命名空间
-namespace app\core;
-use \core\dao;
+namespace core;
+use core\dao;
 
 // 抽象类，只能被继承，不能实例化
-abstract class publicService extends dao{
+abstract class publicService {
+
+  // 保存 dao 实例
+  protected $dao;
 
   // 构造函数
   public function __construct() {

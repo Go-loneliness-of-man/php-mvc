@@ -1,7 +1,7 @@
 <?php
 
 // 命名空间
-namespace app\core;
+namespace core;
 
 // 安全判定，若请求不是来自入口文件，跳转回入口文件，通过 defined() 判断一个常量是否存在
 if(!defined('ASINDEX')) {
@@ -64,7 +64,7 @@ class app {
     file_exists(APP_PATH.M.'\/model\/'.$class.'.php')       ?   include_once(APP_PATH.M.'\/model\/'.$class.'.php')        :   0;// 加载模块模型
     file_exists(APP_PATH.M.'\/service\/'.$class.'.php')     ?   include_once(APP_PATH.M.'\/service\/'.$class.'.php')      :   0;// 加载模块服务
     file_exists(MIDDLEWARE_PATH.$class.'.php')              ?   include_once(MIDDLEWARE_PATH.$class.'.php')               :   0;// 加载中间件类，middleware
-    file_exists(PLUGIN_PATH.$class.'.php')                  ?   include_once(VENDOR_PATH.$class.'.php')                   :   0;// 加载插件类，vendor
+    file_exists(PLUGIN_PATH.$class.'.php')                  ?   include_once(PLUGIN_PATH.$class.'.php')                   :   0;// 加载插件类，vendor
   }
   // 将自动加载方法注册到 php 内置的自动加载栈
   private static function setAutoLoad() {
@@ -102,7 +102,7 @@ class app {
   private static function middleware() {
     global $config;                                       // 引入全局变量 config 到当前函数作用域
     for($i = 0, $c = count($config['middlewareFile']); $i < $c; $i++) {                    // 执行所有已配置的中间件
-      $class = '\middleware\\'.$config['middlewareFile'][$i][0];                           // 拼接类名
+      $class = 'app\middleware\\'.$config['middlewareFile'][$i][0];                        // 拼接类名
       $method = $config['middlewareFile'][$i][1];                                          // 拼接方法名
       $class::$method($_REQUEST);                                                          // 执行中间件
     }

@@ -25,7 +25,7 @@ $config = [
     'charset' => 'utf8',
 
     // 数据库名
-    'dbname' => '',
+    'dbname' => 'myboard',
 
     // model 的表名前缀
     'front' => '',
@@ -46,7 +46,11 @@ $config = [
 
   // 配置公共函数文件
   'publicFuncFile' => [
-    'public.php'// 系统函数，必须加载
+
+    // 系统函数开始，rw 很多部分会对以下函数存在依赖，请不要轻易删除
+    'public.php',// 常用公共函数
+    'graph.php',// 图像处理函数
+    // 系统函数结束
   ],
 
   // 项目 URL

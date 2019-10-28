@@ -1,33 +1,33 @@
 <?php
 
 // 命名空间
-namespace app\core;
+namespace core;
 use \PDO;
 use \PDOStatement;
 use \PDOException;
 
 // 单例模式，静态方法为 sql 构造器，普通方法为原生查询
-class dao {
+final class dao {
 
   private static $pdo;                                                                             // 保存 pdo 对象
   private static $dao = NULL;                                                                      // 保存 dao 对象
   protected static $prepareSql = [];                                                               // 保存预定义 sql
-  protected $type;
-  protected $host;
-  protected $port;
-  protected $user;
-  protected $pwd;
-  protected $charset;
-  protected $dbname;
-  protected $front;
-  protected $behind;
+  protected $type;                                                                                 // DBMS
+  protected $host;                                                                                 // 主机 ip
+  protected $port;                                                                                 // 数据库监听的端口号
+  protected $user;                                                                                 // 账号名
+  protected $pwd;                                                                                  // 账号密码
+  protected $charset;                                                                              // 通信编码
+  protected $dbname;                                                                               // 数据库名
+  protected $front;                                                                                // 表前缀
+  protected $behind;                                                                               // 表后缀
 
   // 私有 clone 方法，阻止 clone
   private function __clone() {}
 
   // 私有构造函数
   private function __construct($db = []) {
-    global $config;                                                                                 // 引入全局变量
+    global $config;                                                                                 // 引入全局配置变量
 
     // 配置数据库基本信息
     $this->type    =  empty($config['database']['type'])      ?    @$db['type']       :    $config['database']['type'];        // DBMS
@@ -57,7 +57,7 @@ class dao {
 
   //获取对象引用
   public static function get($db = []) {
-    if(!self::$dao instanceof self)                                                                 // 若尚未实例化，则 new
+    if(!((self::$dao instanceof self) && $db == []))                                                // 若尚未实例化，则 new
       self::$dao = new dao($db);
     return self::$dao;                                                                              // 返回引用
   }
@@ -82,16 +82,21 @@ class dao {
     return ($this->query($sql, $unset))[0];                                                         // 查询并只返回第一条记录
   }
 
+  // 执行 sql 并返回受影响记录数
+  public function exec($sql) {
+    return self::$pdo->exec(strtoupper($sql));
+  }
+
   /*  *************************************************************************** sql 构造器 *************************************************************************************
   **  支持大多数 sql 关键字，采用 php 关联数组传参，基于 sql 关键字设计参数，可选择直接返回 sql 语句（用于实现子查询、调试）。目前支持 6 个方法：
-  **  select()、one()、define()、insert()、update()、delete()，作用依次是查询、查询一条、预定义查询（是在函数内配置好的数组，使用时可直接调用）、
+  **  select()、select_one()、define()、insert()、update()、delete()，作用依次是查询、查询一条、预定义查询（是在函数内配置好的数组，使用时可直接调用）、
   **  增、改、删
 
   **  作者 bilibili id: --刃舞--
 
   **  select(): 用于构造 SELECT 语句，参数如下。
   **  field:      string                                                                            必须，要获取的字段
-  **  form:       string 或 [[ string, string, string, string ], [ string, string, string ]]        必须，数据源，当传入数组时会自动进行关联查询，关联查询时，第一个元素为表 1、表2、条件、关联类型（可选，默认 left join），之后为表名、条件、关联类型（可选）
+  **  from:       string 或 [[ string, string, string, string ], [ string, string, string ]]        必须，数据源，当传入数组时会自动进行关联查询，关联查询时，第一个元素为表 1、表2、条件、关联类型（可选，默认 left join），之后为表名、条件、关联类型（可选）
   **  where:      string 或 [[ string, string, string ], [ string, string, string]]                 可选，where 子句，每个子数组依次是左值、关系运算符和右值、逻辑运算符（可选，默认 AND）
   **  group:      string                                                                            可选，分组字段名
   **  distinct:   bool                                                                              可选，是否去重
@@ -99,7 +104,7 @@ class dao {
   **  limit:      [ number, number ]                                                                可选，获取的记录区间，可以只传第一个
   **  onlySql:    bool                                                                              可选，是否直接返回 sql 字符串
 
-  **  one():  专用于查询单条记录，参数与 select() 相同。
+  **  select_one():  专用于查询单条记录，参数与 select() 相同。
 
   **  define(): 用于定义、执行预定义的查询。
   **  key:        string                                                                             必须，预定义 sql 在 prepareSql 中的 key
@@ -119,7 +124,7 @@ class dao {
   **  onlySql:    bool                                                                               可选，是否直接返回 sql 字符串
 
   **  delete(): 用于构造 DELETE 语句，参数如下：
-  **  table:                                                                                         必须，要删除的表名
+  **  table:      string                                                                             必须，要删除的表名
   **  where:      string 或 [[ string, string, string ], [ string, string, string]]                  可选，where 子句，与 select 相同
   **  onlySql:    bool                                                                               可选，是否直接返回 sql 字符串
   */
@@ -255,7 +260,7 @@ class dao {
 
     // 返回结果
     if(isset($onlySql)) return $sql;
-    else  return $dao->query($sql);
+    else  return $dao->exec($sql);
   }
 
   // 生成 update
@@ -297,7 +302,7 @@ class dao {
   ';
     // 返回结果
     if(isset($onlySql)) return $sql;
-    else  return $dao->query($sql);
+    else  return $dao->exec($sql);
   }
 
   // 生成 delete
@@ -337,7 +342,7 @@ class dao {
   ';
     // 返回结果
     if(isset($onlySql)) return $sql;
-    else  return $dao->query($sql);
+    else  return $dao->exec($sql);
   }
 }
 

@@ -2,15 +2,18 @@
 
 // 命名空间
 namespace app\index\model;
-use app\core\publicModel;
+use \core\publicModel;
 
 class demo extends publicModel{
 
-    protected $table = '123';// 覆盖默认表名
+    protected $table = 'mes';                                           // 覆盖默认表名
+
+    // protected $dbname = 'mes';                                          // 覆盖默认数据库
 
     public function demo() {
         dump($this->table);
         dump($this->dbname);
+        dump($this->fields);
     }
 }
 

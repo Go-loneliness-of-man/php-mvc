@@ -1,8 +1,5 @@
 <?php
 
-// 命名空间
-namespace app;
-
 // 入口标记
 define('ASINDEX', true);
 
