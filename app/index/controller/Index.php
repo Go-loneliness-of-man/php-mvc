@@ -10,7 +10,7 @@ class index extends publicController {
 
   public function index() {
     $service = new demo();
-    return $service->demo();
+    return '控制器 index，调用服务 demo<br>'.$service->demo();
   }
 
   public function plugIn() {

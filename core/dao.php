@@ -12,15 +12,15 @@ final class dao {
   private static $pdo;                                                                             // 保存 pdo 对象
   private static $dao = NULL;                                                                      // 保存 dao 对象
   protected static $prepareSql = [];                                                               // 保存预定义 sql
-  protected $type;                                                                                 // DBMS
+  public $type;                                                                                    // DBMS
   protected $host;                                                                                 // 主机 ip
   protected $port;                                                                                 // 数据库监听的端口号
   protected $user;                                                                                 // 账号名
   protected $pwd;                                                                                  // 账号密码
   protected $charset;                                                                              // 通信编码
-  protected $dbname;                                                                               // 数据库名
-  protected $front;                                                                                // 表前缀
-  protected $behind;                                                                               // 表后缀
+  public $dbname;                                                                                  // 数据库名
+  public $front;                                                                                   // 表前缀
+  public $behind;                                                                                  // 表后缀
 
   // 私有 clone 方法，阻止 clone
   private function __clone() {}
@@ -72,7 +72,7 @@ final class dao {
 
   // 执行 sql 或查询多条记录
   public function query($sql, $unset = 1) {
-    $res = self::$pdo->prepare(strtoupper($sql));                                                   // 全部转为大写并准备结果集
+    $res = self::$pdo->prepare($sql);                                                               // 准备结果集
     $res->execute();                                                                                // 执行
     return $unset ? self::unset($res->fetchAll()) : $res->fetchAll();                               // 返回所有记录
   }
@@ -84,7 +84,7 @@ final class dao {
 
   // 执行 sql 并返回受影响记录数
   public function exec($sql) {
-    return self::$pdo->exec(strtoupper($sql));
+    return self::$pdo->exec($sql);
   }
 
   /*  *************************************************************************** sql 构造器 *************************************************************************************
@@ -207,7 +207,7 @@ final class dao {
   // 查询一条
   public static function select_one($params) {
     extract($params);                                  // 批量生成参数
-    return $onlySql ? self::select($params) : (self::select($params))[0];
+    return isset($onlySql) && $onlySql ? self::select($params) : (self::select($params))[0];
   }
 
   // 执行预定义 sql
@@ -230,6 +230,7 @@ final class dao {
 
   // 生成 insert
   public static function insert($params) {
+    $dao = self::get();                                // 获取 dao 对象
     extract($params);                                  // 批量生成参数
     $sql = '
     INSERT INTO
@@ -265,6 +266,7 @@ final class dao {
 
   // 生成 update
   public static function update($params) {
+    $dao = self::get();                                // 获取 dao 对象
     extract($params);                                  // 批量生成参数
     $sql = '
     UPDATE
@@ -307,6 +309,7 @@ final class dao {
 
   // 生成 delete
   public static function delete($params) {
+    $dao = self::get();                                // 获取 dao 对象
     extract($params);                                  // 批量生成参数
     $sql = '
     DELETE FROM
