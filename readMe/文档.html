@@ -146,7 +146,7 @@
           namespace app\模块名\controller;                          // 命名空间，与文件路径保持一致
           use \core\publicController;                               // 引用公共控制器
 
-          class index extends publicController {                    // 继承公共控制器
+          class 控制器名 extends publicController {                 // 继承公共控制器
 
             public function 操作名() {
               函数体;
@@ -233,9 +233,9 @@
 
         class 服务名 extends publicService {
 
-            public function demo() {
-                // $model = new demoModel();
-                return '你调用了服务 demo，服务 demo 调用了模型 demo';
+            public function 服务包含的方法名() {
+              函数体;
+              return 结果;
             }
         }
       </code>
@@ -254,7 +254,7 @@
         路径：/app/模块名/model/数据表的小驼峰形式.php
       </p>
       <p>
-        rw 的 model 是基于 PDO 的，所以使用前必须在 php.ini 开启 PDO，一个模型的一般写法应是：
+        rw 的 model 是基于 PDO 的，所以<span class="em">使用前必须在 php.ini 开启 PDO</span>，一个模型的一般写法应是：
       </p>
       <code>
         &lt;?php
@@ -263,8 +263,9 @@
 
         class 模型名 extends publicModel {                      // 继承公共模型
 
-            public function test() {
-
+            public function 模型包含的方法名() {
+              函数体;
+              return 结果;
             }
         }
       </code>
