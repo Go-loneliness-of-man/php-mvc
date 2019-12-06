@@ -4,29 +4,32 @@
 function recursiveOutputVariable($s, $var, $h) {
     $type = gettype($var);                                                  // 获取变量类型
     $space = '';                                                            // 生成空白符
-    for($i = 0; $i < $h; $space = $space.'    ', $i++);                     // 循环解析所有属性
+    for($i = 0; $i < $h; $space = $space.'    ', $i++);
     if($type === 'object' || $type === 'array') {                           // 解析对象、数组
-        $s = $h === 1 ? "$s$space"."$type(<br>" : $s."$type(<br>";          // 对象、数组开头换行
+        $s = $h === 1 ? "$s$space"."$type(<br>" : $s."$type(<br><br>";      // 对象、数组开头换行
         $i = 0;                                                             // 存储循环次数
         foreach($var as $k => $v) {                                         // 遍历对象属性
-            if(gettype($v) === 'object' || gettype($v) === 'array')         // 判断属性值是否是对象、数组
-                $s = "$s<br>    $space$k => ".recursiveOutputVariable($s, $v, $h + 1);      // 是对象、数组，进行递归
+            if(gettype($v) === 'object' || gettype($v) === 'array') {       // 判断属性值是否是对象、数组
+                $s = "$s<br>    $space$k => ";                              // 这里注意，不能将该句与下句合并，因为下句中计算了 $s，在表达式内改变已引用变量会导致错误
+                $s = recursiveOutputVariable($s, $v, $h + 1);               // 是对象、数组，进行递归
+            }
             else                                                            // 简单类型
                 $s = $i === 0 ? $s."    $space$k => ".gettype($v)." ($v)" : $s."<br>    $space$k => ".gettype($v)." ($v)";
             $i++;
         }
         $s = $s."<br>$space)<br>";
     }
-    else
+    else                                                                    // 简单类型
         $s = "$s    $space$type ($var)";
     return $s;
 }
 
-// 格式化输出变量，便于调试查看
-function dump($var, $name = '') {
+// 格式化输出变量，便于调试查看，参数依次是变量、变量名、是否直接返回字符串而不输出
+function dump($var, $name = '', $string = false) {
     $name = $name === '' ? '' : "    $$name :<br>";                         // 处理开头
-    $s = "<pre>$name";
+    $s = "<pre>$name";                                                      // 准备开头
     $s = recursiveOutputVariable($s, $var, 1);                              // 递归解析变量为字符串
+    if($string) return $s;
     echo $s.'</pre>';
 }
 
