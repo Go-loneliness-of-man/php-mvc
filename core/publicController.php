@@ -7,7 +7,7 @@ namespace core;
 abstract class publicController {
 
   // 输出提示并跳转，参数是消息、模块、控制器、操作、时间、参数，只有第一个是必选的
-  protected function jump($msg, $m = M, $c = C, $a = A, $time = 5, $params = []) {
+  public function jump($msg, $m = M, $c = C, $a = A, $time = 5, $params = []) {
     global $config;                                                 // 引入全局配置变量
     $refresh = 'Refresh:'.$time.';url='.$config['URL'][0]."$m/$c/$a?params=".json_encode($params);  // 拼接请求头
     header($refresh);                                               // 跳转
@@ -16,7 +16,7 @@ abstract class publicController {
   }
 
   // 参数校验，参数依次是规则、参数
-  protected function rule($rule, $params) {
+  public function rule($rule, $params) {
     foreach($rule as $k => $v)                                      // 遍历参数
       if(gettype($params[$k]) !== $v) {                             // 判断参数类型是否与规则相同
         echo '参数错误，参数 '.$k.' 应为 '.$v.' 类型';                // 不同，输出错误
@@ -25,7 +25,7 @@ abstract class publicController {
   }
 
   // 获取请求参数，默认进行类型转换
-  protected function get($isJson = 0, $convert = 1) {
+  public function get($isJson = 0, $convert = 1) {
     $res = [];                                                      // 准备结果
     if(!$isJson && $convert)                                        // 不是 json 且转换
       foreach($_REQUEST as $k => $v) {                              // 遍历请求参数
