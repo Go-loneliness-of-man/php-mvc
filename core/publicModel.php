@@ -28,7 +28,7 @@ abstract class publicModel {
     $this->table = $this->table === ''                                                      // 保存子类 model 所映射的表名
     ? $this->dao->front.$table.$this->dao->behind                                           // 子类未进行覆盖，采用子类名的小写下划线
     : $this->table;                                                                         // 子类进行了覆盖，不进行重新赋值
-  
+
     // 保存表的创建语句
     $this->struct = ($this->dao->one('show create table '.$this->dbname.'.'.$this->table))['Create Table'];
 

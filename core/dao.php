@@ -168,7 +168,7 @@ final class dao {
       }
       $where = $temp;
     }
-    else if(isset($where) && gettype($where) === 'string' ){
+    else if(isset($where) && gettype($where) === 'string' ) {
       $where = 'WHERE
         '.$where;
     }
