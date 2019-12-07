@@ -42,6 +42,13 @@ abstract class publicController {
     return $isJson ? $res : ($convert ? $res : $_REQUEST);          // 若是 json 或需要类型转换则返回 $res，否则返回 $_REQUEST
   }
 
+  // 常用控制器代码片段，参数依次是服务实例、校验规则、执行的服务方法名
+  public function oftenCode($service, $rule = [], $method) {
+    $params = $this->get();                                         // 获取参数
+    $this->rule($rule, $params);                                    // 参数校验
+    return $service->$method($params);                              // 调用服务
+  }
+
   // ********************************************************* 以下为模板引擎 ********************************************************************
 
   // 渲染视图所需的模板变量

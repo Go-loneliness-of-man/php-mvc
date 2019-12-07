@@ -15,11 +15,9 @@ class index extends publicController {
     return '控制器 index 的 index 操作，调用了服务 index 的 index 方法<br>'.$service->index($params);
   }
 
-  // 简化流程示例
+  // 简化控制器流程示例
   public function easy() {
-    $service = new service();
-    $params = $this->get();
-    return '控制器 index 的 index 操作，调用了服务 index 的 index 方法<br>'.$service->index($params);
+    return $this->oftenCode(new service(), [], 'easy');
   }
 
   // 插件示例

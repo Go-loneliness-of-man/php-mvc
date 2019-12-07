@@ -12,6 +12,10 @@ class index extends publicService {
         // dump($model->index());
         dump($params);
     }
+
+    public function easy($params) {
+        return '你调用 index 控制器 的 easy 方法，进而执行了 index 服务的 easy 方法';
+    }
 }
 
 

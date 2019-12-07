@@ -202,6 +202,16 @@
         <li><span class="em">NULL</span></li>
       </ol>
 
+      <span class="em">oftenCode($service, $rule = [], $method)</span>：
+      <p>
+        常用控制器代码片段，用于简化控制器代码的书写，该方法会依次进行参数获取、参数校验、调用服务三个操作，其参数如下：
+      </p>
+      <ol>
+        <li><span class="em">$service</span>，服务实例。</li>
+        <li><span class="em">$rule = []</span>，校验规则。</li>
+        <li><span class="em">$method</span>，执行的服务方法名。</li>
+      </ol>
+
       <span class="em">loadVar($key, $value)</span>：
       <p>
         属于公共控制器内置的模板引擎，用于接收渲染视图所需变量。
