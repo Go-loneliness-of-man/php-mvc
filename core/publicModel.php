@@ -7,12 +7,12 @@ use core\dao;
 // 抽象类，只能被继承，不能实例化
 abstract class publicModel {
 
-  protected $dao;                                                                           // 保存 dao 实例
-  protected $dbname = '';                                                                   // 保存数据库名
-  protected $table = '';                                                                    // 保存表名
-  protected $struct;                                                                        // 保存表结构
-  protected $fields;                                                                        // 保存当前表的所有字段
-  protected $primaryKey = '';                                                               // 单独保存主键
+  public $dao;                                                                              // 保存 dao 实例
+  public $dbname = '';                                                                      // 保存数据库名
+  public $table = '';                                                                       // 保存表名
+  public $struct;                                                                           // 保存表结构
+  public $fields;                                                                           // 保存当前表的所有字段
+  public $primaryKey = '';                                                                  // 单独保存主键
 
   // 构造函数
   public function __construct() {

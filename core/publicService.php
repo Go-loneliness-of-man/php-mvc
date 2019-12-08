@@ -14,6 +14,16 @@ abstract class publicService {
   public function __construct() {
 
   }
+
+  // 标准返回格式
+  public function res($code, $message, $result, $total = 0) {
+    return json_encode([
+      'code' => $code,
+      'message' => $message,
+      'result' => $result,
+      'total' => $total === 0 ? null : $total
+    ]);
+  }
 }
 
 

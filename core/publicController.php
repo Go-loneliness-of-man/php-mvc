@@ -18,7 +18,7 @@ abstract class publicController {
   // 参数校验，参数依次是规则、参数
   protected function rule($rule, $params) {
     foreach($rule as $k => $v)                                      // 遍历参数
-      if(gettype($params[$k]) !== $v) {                             // 判断参数类型是否与规则相同
+      if(gettype(@$params[$k]) !== $v) {                            // 判断参数类型是否与规则相同
         echo '参数错误，参数 '.$k.' 应为 '.$v.' 类型';                // 不同，输出错误
         exit;                                                       // 结束
       }
@@ -43,8 +43,8 @@ abstract class publicController {
   }
 
   // 常用控制器代码片段，参数依次是服务实例、校验规则、执行的服务方法名
-  public function oftenCode($service, $rule = [], $method) {
-    $params = $this->get();                                         // 获取参数
+  public function oftenCode($service, $rule = [], $method, $isJson = 0, $convert = 1) {
+    $params = $this->get($isJson, $convert);                        // 获取参数
     $this->rule($rule, $params);                                    // 参数校验
     return $service->$method($params);                              // 调用服务
   }
