@@ -65,9 +65,6 @@ abstract class publicController {
 
   // 对模版进行替换并输出
   public function show($view) {
-    dump(filemtime(APP_PATH.M.'/view/'.$view.'.php'));
-    dump(filemtime(APP_PATH.M.'/view/'.$view.'.view.php'));
-    dump((filemtime(APP_PATH.M.'/view/'.$view.'.view.php') > filemtime(APP_PATH.M.'/view/'.$view.'.php')));
     $exists = file_exists(APP_PATH.M.'/view/'.$view.'.view.php');
 
     // 检测是否已经生成过 .view 文件、.view 文件是否是最新的，若未生成、不是最新的则生成 .view 文件（是否最新是根据 .view.php 生成时间是否大于 .php 来判断的，若大于则最新，否则不是最新）
