@@ -10,7 +10,7 @@ function recursiveOutputVariable($s, $var, $h) {
         $i = 0;                                                             // 存储循环次数
         foreach($var as $k => $v) {                                         // 遍历对象属性
             if(gettype($v) === 'object' || gettype($v) === 'array') {       // 判断属性值是否是对象、数组
-                $s = "$s<br>    $space$k => ";                              // 拼接开头
+                $s = "$s<br>    $space$k => ";                              // 这里注意，不能将该句与下句合并，因为下句中计算了 $s，在表达式内改变已引用变量会导致错误
                 $s = recursiveOutputVariable($s, $v, $h + 1);               // 是对象、数组，进行递归
             }
             else                                                            // 简单类型
@@ -25,7 +25,8 @@ function recursiveOutputVariable($s, $var, $h) {
 }
 
 // 格式化输出变量，便于调试查看，参数依次是变量、变量名、是否直接返回字符串而不输出
-function dump($var, $name = '', $string = false) {
+function dump($var, $name = '', $string = false, $isJson = 0) {
+    if($isJson) return json_encode($var);
     $name = $name === '' ? '' : "    $$name :<br>";                         // 处理开头
     $s = "<pre>$name";                                                      // 准备开头
     $s = recursiveOutputVariable($s, $var, 1);                              // 递归解析变量为字符串
