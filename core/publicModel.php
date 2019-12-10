@@ -52,12 +52,12 @@ abstract class publicModel {
     if($flag)                                                                                 // 插入多条
       for($i = 0, $c = count($data); $i < $c; $i++)
         $res = dao::insert([
-          'table' => $this->table,
+          'table' => $this->dbname.'.'.$this->table,
           'data' => $data[$i]
         ]);
     else                                                                                      // 插入单条
       $res = dao::insert([
-        'table' => $this->table,
+        'table' => $this->dbname.'.'.$this->table,
         'data' => $data
       ]);
     return $res;
@@ -66,7 +66,7 @@ abstract class publicModel {
   // 删除记录，返回删除条数，$where 为字符串 或 关联数组，作为删除的判断条件
   public function delete($where) {
     return dao::delete([
-      'table' => $this->table,
+      'table' => $this->dbname.'.'.$this->table,
       'where' => $where
     ]);
   }
@@ -74,7 +74,7 @@ abstract class publicModel {
   // 修改记录，返回修改条数，$key、$value 为修改的字段名、值，$where 为关联数组，作为修改的判断条件
   public function update($key, $value, $where) {
     return dao::update([
-      'table' => $this->table,
+      'table' => $this->dbname.'.'.$this->table,
       'key' => $key,
       'value' => $value,
       'where' => $where
@@ -90,14 +90,14 @@ abstract class publicModel {
         $where[$i] = [$this->primaryKey, ' = '.$primaryKey[$i], 'OR'];                      // 拼接一个条件
       $res = dao::select([                                                                  // 执行查询
         'field' => '*',
-        'from' => $this->table,
+        'from' => $this->dbname.'.'.$this->table,
         'where' => $where
       ]);
     }
     else                                                                                    // 查询单条
       $res = dao::select_one([
         'field' => '*',
-        'from' => $this->table,
+        'from' => $this->dbname.'.'.$this->table,
         'where' => $this->primaryKey.' = '.$primaryKey
       ]);
     return $res;
