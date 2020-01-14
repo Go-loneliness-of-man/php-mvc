@@ -57,15 +57,28 @@ class app {
   // 自动加载类的方法，包括 core、模块的控制器和模型类、vendor 内的类文件，每次接收一个类名
   private static function setAutoLoadFunction($class) {
     $class = basename($class);                            // 去掉命名空间前缀，只保留类名
+    $path = [                                             // 拼接路径
+      CORE_PATH.$class.'.php',                            // 加载框架核心类，core
+      APP_PATH.M.'\/controller\/'.$class.'.php',          // 加载模块控制器
+      APP_PATH.M.'\/model\/'.$class.'.php',               // 加载模块模型
+      APP_PATH.M.'\/service\/'.$class.'.php',             // 加载模块服务
+      MIDDLEWARE_PATH.$class.'.php',                      // 加载中间件类，middleware
+      PLUGIN_PATH.$class.'.php'                           // 加载插件类，vendor
+    ];
 
     // 依次判断加载核心类、控制器类、模型类、服务类、中间件类、插件类
-    file_exists(CORE_PATH.$class.'.php')                    ?   include_once(CORE_PATH.$class.'.php')                     :   0;// 加载框架核心类，core
-    file_exists(APP_PATH.M.'\/controller\/'.$class.'.php')  ?   include_once(APP_PATH.M.'\/controller\/'.$class.'.php')   :   0;// 加载模块控制器
-    file_exists(APP_PATH.M.'\/model\/'.$class.'.php')       ?   include_once(APP_PATH.M.'\/model\/'.$class.'.php')        :   0;// 加载模块模型
-    file_exists(APP_PATH.M.'\/service\/'.$class.'.php')     ?   include_once(APP_PATH.M.'\/service\/'.$class.'.php')      :   0;// 加载模块服务
-    file_exists(MIDDLEWARE_PATH.$class.'.php')              ?   include_once(MIDDLEWARE_PATH.$class.'.php')               :   0;// 加载中间件类，middleware
-    file_exists(PLUGIN_PATH.$class.'.php')                  ?   include_once(PLUGIN_PATH.$class.'.php')                   :   0;// 加载插件类，vendor
+    foreach($path as $v)
+      if(file_exists($v)) {                               // 找到则加载并跳出
+        include_once($v);
+        return;
+      }
+
+    // 未找到类，设置响应头为 404
+    http_response_code(404);
+    echo "找不到类 $class ，请检查路由/路径是否正确";
+    exit;
   }
+
   // 将自动加载方法注册到 php 内置的自动加载栈
   private static function setAutoLoad() {
     spl_autoload_register(array(__CLASS__, 'setAutoLoadFunction'));
