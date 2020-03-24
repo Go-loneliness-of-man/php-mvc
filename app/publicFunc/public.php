@@ -70,74 +70,35 @@ function addOneDate($date, $separator = '-', $format = 'y-m-d') {
 
 // 切换英文大小写
 function toggleCase($s) {
-  for($i = 0, $c = strlen($s); $i < $c; $i++)                               // 遍历字符串
-    if((ord($s[$i]) > 64) && (ord($s[$i]) < 91))                            // 检测大写
-      $s[$i] = chr(ord($s[$i]) + 32);                                       // 转换大写为小写
-    else if((ord($s[$i]) > 96) && (ord($s[$i]) < 123))                      // 检测小写
-      $s[$i] = chr(ord($s[$i]) - 32);                                       // 转换小写为大写
-  return $s;
+    for($i = 0, $c = strlen($s); $i < $c; $i++)                             // 遍历字符串
+        if((ord($s[$i]) > 64) && (ord($s[$i]) < 91))                        // 检测大写
+            $s[$i] = chr(ord($s[$i]) + 32);                                 // 转换大写为小写
+        else if((ord($s[$i]) > 96) && (ord($s[$i]) < 123))                  // 检测小写
+            $s[$i] = chr(ord($s[$i]) - 32);                                 // 转换小写为大写
+    return $s;
 }
 
 // 将小驼峰转换为小写下划线
 function convertNaming($name) {
-  $newName = '';                                                          // 准备新字符串
-  for($i = 0, $j = 0, $c = strlen($name); $i < $c; $i++)                  // 遍历原字符串
-    if((ord($name[$i]) > 64) && (ord($name[$i]) < 91))                    // 检测大写
-      $newName = $newName.'_'.toggleCase($name[$i]);                      // 转换小写并加 _
-    else
-      $newName = $newName.$name[$i];                                      // 不是大写，直接拼接
-  return $newName;
+    $newName = '';                                                          // 准备新字符串
+    for($i = 0, $j = 0, $c = strlen($name); $i < $c; $i++)                  // 遍历原字符串
+        if((ord($name[$i]) > 64) && (ord($name[$i]) < 91))                  // 检测大写
+            $newName = $newName.'_'.toggleCase($name[$i]);                  // 转换小写并加 _
+        else
+            $newName = $newName.$name[$i];                                  // 不是大写，直接拼接
+    return $newName;
 }
 
-// // 日期减 1
-// cutOneDate(date){
-//   let mon_day = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
-//   date = date.split(/[$\/\\-]/i);// 切割日期
-//   // 转换日期为数值
-//   for(let j = 0; j < date.length; j++)
-//     date[j] = parseInt(date[j]);
-//   // 闰年情况
-//   if(date[0] % 4 === 0)
-//     mon_day[1] = 28;
-//   // 判断是否是本年第一天
-//   if(date[1] === 1 && date[2] === 1) {
-//     date[0]--;
-//     date[1] = 12;
-//     date[2] = 31;
-//   }
-//   else if(date[2] === 1){// 判断是否是本月第一天
-//     date[1]--;
-//     date[2] = mon_day[date[1]];
-//   }
-//   else{
-//     date[2]--;
-//   }
-//   date[1] = date[1] < 10 ? `0${date[1]}` : `${date[1]}`;// 补全十位的 0
-//   date[2] = date[2] < 10 ? `0${date[2]}` : `${date[2]}`;
-//   return `${date[0]}-${date[1]}-${date[2]}`;
-// },
-
-// // 比较两个日期的大小
-// function compareDate(a, b) {
-//   let t = [];
-//   [t[0], t[1], t[2]] = a.split('-');
-//   [t[3], t[4], t[5]] = b.split('-');
-//   t = t.map(v => parseInt(v));
-//   for(let i = 0; i < 3; i++) {
-//     if(t[i] > t[i + 3]) {
-//       return 1;
-//     }
-//     else if (t[i] < t[i + 3]){
-//       return 0;
-//     }
-//   }
-//   return 1;
-// }
+// basename，某些版本 php 没有 basename，这里重新实现下
+function rwBaseName($name) {
+    $name = explode('\\', $name);
+    return $name[count($name) - 1];
+}
 
 // 生成随机字符串
 function randString(&$s, $len) {
   $c = 'abcdefghijklmnopqistuvwxyzABCDEFGHJKLMNOPQISTUVWXYZ23456789';       //字符表
-  for($i = 0; $i < $len; $i++)   $s = $s.$c[mt_rand(0, 59)];                //拼接随机字符串
+  for($i = 0; $i < $len; $i++)   $s = $s.$c[mt_rand(0,59)];                 //拼接随机字符串
   return $s;
 }
 

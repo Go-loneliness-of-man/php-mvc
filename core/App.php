@@ -56,16 +56,17 @@ class app {
 
   // 自动加载类的方法，包括 core、模块的控制器和模型类、vendor 内的类文件，每次接收一个类名
   private static function setAutoLoadFunction($class) {
-    $class = basename($class);                            // 去掉命名空间前缀，只保留类名
+    $class = rwBaseName($class);                          // 去掉命名空间前缀，只保留类名
     $path = [                                             // 拼接路径
       CORE_PATH.$class.'.php',                            // 加载框架核心类，core
-      APP_PATH.M.'\/controller\/'.$class.'.php',          // 加载模块控制器
-      APP_PATH.M.'\/model\/'.$class.'.php',               // 加载模块模型
-      APP_PATH.M.'\/service\/'.$class.'.php',             // 加载模块服务
+      APP_PATH.M.'/controller/'.$class.'.php',            // 加载模块控制器
+      APP_PATH.M.'/model/'.$class.'.php',                 // 加载模块模型
+      APP_PATH.M.'/service/'.$class.'.php',               // 加载模块服务
       MIDDLEWARE_PATH.$class.'.php',                      // 加载中间件类，middleware
       PLUGIN_PATH.$class.'.php'                           // 加载插件类，vendor
     ];
 
+    dump($class);
     // 依次判断加载核心类、控制器类、模型类、服务类、中间件类、插件类
     foreach($path as $v)
       if(file_exists($v)) {                               // 找到则加载并跳出

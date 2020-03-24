@@ -18,7 +18,7 @@ abstract class publicController {
   // 参数校验，参数依次是规则、参数
   protected function rule($rule, $params) {
     foreach($rule as $k => $v)                                      // 遍历参数
-      if(gettype(@$params[$k]) !== $v) {                            // 判断参数类型是否与规则相同
+      if(gettype($params[$k]) !== $v) {                             // 判断参数类型是否与规则相同
         echo '参数错误，参数 '.$k.' 应为 '.$v.' 类型';                // 不同，输出错误
         exit;                                                       // 结束
       }
@@ -42,13 +42,6 @@ abstract class publicController {
     return $isJson ? $res : ($convert ? $res : $_REQUEST);          // 若是 json 或需要类型转换则返回 $res，否则返回 $_REQUEST
   }
 
-  // 常用控制器代码片段，参数依次是服务实例、校验规则、执行的服务方法名
-  public function oftenCode($service, $rule = [], $method, $isJson = 0, $convert = 1) {
-    $params = $this->get($isJson, $convert);                        // 获取参数
-    $this->rule($rule, $params);                                    // 参数校验
-    return $service->$method($params);                              // 调用服务
-  }
-
   // ********************************************************* 以下为模板引擎 ********************************************************************
 
   // 渲染视图所需的模板变量
@@ -65,10 +58,9 @@ abstract class publicController {
 
   // 对模版进行替换并输出
   public function show($view) {
-    $exists = file_exists(APP_PATH.M.'/view/'.$view.'.view.php');
 
-    // 检测是否已经生成过 .view 文件、.view 文件是否是最新的，若未生成、不是最新的则生成 .view 文件（是否最新是根据 .view.php 生成时间是否大于 .php 来判断的，若大于则最新，否则不是最新）
-    if(!$exists || ($exists && (filemtime(APP_PATH.M.'/view/'.$view.'.view.php') < filemtime(APP_PATH.M.'/view/'.$view.'.php')))) {
+    // 检测是否已经生成过 .view 文件、.view 文件是否是最新的，若未生成、不是最新的则生成 .view 文件
+    if(!(file_exists(APP_PATH.M.'/view/'.$view.'.view.php') && (filemtime(APP_PATH.M.'/view/'.$view.'.php') === filemtime(APP_PATH.M.'/view/'.$view.'.view.php')))) {
       $s = file_get_contents(APP_PATH.M.'/view/'.$view.'.php');     // 获取模版内容
       $s = str_replace('{{','<?php echo $this->templateVar[\'', $s);// 替换左边
       $s = str_replace('}}','\']; ?>',$s);                          // 替换右边

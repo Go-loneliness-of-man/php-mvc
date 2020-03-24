@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 
 <head>
-  <title>rw</title>
+  <title></title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="sundry/ls.css">
@@ -146,7 +146,7 @@
           namespace app\模块名\controller;                          // 命名空间，与文件路径保持一致
           use \core\publicController;                               // 引用公共控制器
 
-          class 控制器 extends publicController {                   // 继承公共控制器
+          class index extends publicController {                    // 继承公共控制器
 
             public function 操作名() {
               函数体;
@@ -202,16 +202,6 @@
         <li><span class="em">NULL</span></li>
       </ol>
 
-      <span class="em">oftenCode($service, $rule = [], $method)</span>：
-      <p>
-        常用控制器代码片段，用于简化控制器代码的书写，该方法会依次进行参数获取、参数校验、调用服务三个操作，其参数如下：
-      </p>
-      <ol>
-        <li><span class="em">$service</span>，服务实例。</li>
-        <li><span class="em">$rule = []</span>，校验规则。</li>
-        <li><span class="em">$method</span>，执行的服务方法名。</li>
-      </ol>
-
       <span class="em">loadVar($key, $value)</span>：
       <p>
         属于公共控制器内置的模板引擎，用于接收渲染视图所需变量。
@@ -239,9 +229,9 @@
         &lt;?php
         namespace app\模块名\service;                           // 命名空间，与文件路径保持一致
         use \core\publicService;                                // 引用公共服务
-        use \app\模块名\model\模型名 as 重命名后的模型名;         // 引用模型，若模型与当前服务重名，可用 as 进行重命名
+        use \app\模块名\model\模型名 as 重命名后的模型名;         // 引用模型，当模型与当前服务重名时，用 as 进行重命名
 
-        class 服务名 extends publicService {                    // 继承公共服务
+        class 服务名 extends publicService {
 
             public function demo() {
                 // $model = new demoModel();
@@ -250,7 +240,7 @@
         }
       </code>
       <p>
-        服务用于将传统 mvc 的业务逻辑从 controller 中抽离出来，不是必要操作，如果你认为不需要，可以不写它，由于想不到该加什么功能，目前没有为公共服务实现任何方法。
+        服务用于将传统 mvc 的业务逻辑从 controller 中抽离出来，不是必要操作，如果你认为不需要，可以不写它，由于想不到该加什么功能，我目前没有为公共服务实现任何方法。
       </p>
       <span class="em"></span>：
       <p>
@@ -308,11 +298,11 @@
       </p>
       <span class="em">delete($where)</span>：
       <p>
-        删除记录，返回删除条数，$where 为字符串 或 关联数组，作为删除的判断条件，$where 是个二维数组，格式：$this->delete(['字段名', '逻辑运算符 值'])，栗子：$this->delete(['id', ' =  23'])。（出于安全起见，我特意设置 $where 为必传参数，避免因疏忽而造成损失）
+        删除记录，返回删除条数，$where 为字符串 或 关联数组，作为删除的判断条件。（出于安全起见，我特意设置 $where 为必传参数，避免因疏忽而造成损失）
       </p>
       <span class="em">update($key, $value, $where)</span>：
       <p>
-        修改记录，返回修改条数，$key、$value 为修改的字段名、值，$where 为关联数组，作为修改的判断条件，格式同 delete()。（出于安全起见，我特意设置 $where 为必传参数，避免因疏忽而造成损失）
+        修改记录，返回修改条数，$key、$value 为修改的字段名、值，$where 为关联数组，作为修改的判断条件。（出于安全起见，我特意设置 $where 为必传参数，避免因疏忽而造成损失）
       </p>
       <span class="em">get($primaryKey)</span>：
       <p>
@@ -382,7 +372,7 @@
       </p>
       <span class="em">static function get($db = [])</span>：
       <p>
-        用于获取 dao 引用，参数 db 是 dao 实例的数据库连接配置参数。
+        用于获取 dao 引用
       </p>
       <span class="em">普通属性</span>：
       <p>
@@ -498,7 +488,7 @@
         路径：/plugIn/插件名.php
       </p>
       <p>
-        插件应是一个或多个类文件，统一放在 plugIn 目录下，使用时框架会自动加载其类文件，只要声明 namespace 为 plugIn 并保持类名与文件名一致就好。
+        插件应是一个或多个类文件，统一放在 plugIn 目录下，使用时框架会自动加载其类文件。
       </p>
     </details>
   </div>
