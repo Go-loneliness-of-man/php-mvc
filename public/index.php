@@ -10,4 +10,4 @@ define('ROOT_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 include_once(ROOT_PATH.'core/app.php');
 
 // 初始化并输出结果
-echo core\App::start();
+echo core\app::start();

@@ -10,13 +10,13 @@ $config = [
     'type' => 'mysql',
 
     // 客户端主机
-    'host' => 'localhost',
+    'host' => '47.244.189.67',
 
     // 数据库端口
     'port' => '3306',
 
     // 管理员账户
-    'user' => 'root',
+    'user' => 'golone',
 
     // 密码
     'pwd' => '123',
@@ -25,13 +25,13 @@ $config = [
     'charset' => 'utf8',
 
     // 数据库名
-    'dbname' => 'myboard',
+    'dbname' => 'rwTest',
 
     // model 的表名前缀
     'front' => '',
 
     // model 的表名后缀
-    'behind' => ''
+    'behind' => '_t'
   ],
 
   // 系统配置
@@ -48,14 +48,14 @@ $config = [
   'publicFuncFile' => [
 
     // 系统函数开始，rw 很多部分会对以下函数存在依赖，请不要轻易删除
-    'public.php',// 常用公共函数
-    'graph.php',// 图像处理函数
+    'public.php', // 常用公共函数
+    'graph.php', // 图像处理函数
     // 系统函数结束
   ],
 
   // 项目 URL
   'URL' => [
-    'http://rw.com/'
+    'http://rw.golone.xyz/'
   ],
 
   // 配置中间件，执行顺序与数组顺序相同，每个元素依次是类名、方法名

@@ -66,18 +66,20 @@ class app {
       PLUGIN_PATH.$class.'.php'                           // 加载插件类，vendor
     ];
 
-    dump($class);
     // 依次判断加载核心类、控制器类、模型类、服务类、中间件类、插件类
+    $non = true;
     foreach($path as $v)
       if(file_exists($v)) {                               // 找到则加载并跳出
+        $non = false;
         include_once($v);
-        return;
       }
 
-    // 未找到类，设置响应头为 404
-    http_response_code(404);
-    echo "找不到类 $class ，请检查路由/路径是否正确";
-    exit;
+    // 未找到类，设置响应头为 404 并结束
+    if($non) {
+      http_response_code(404);
+      echo "找不到类 $class ，请检查路由/路径是否正确";
+      exit;
+    }
   }
 
   // 将自动加载方法注册到 php 内置的自动加载栈

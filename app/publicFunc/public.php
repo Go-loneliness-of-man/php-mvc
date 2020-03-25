@@ -70,35 +70,35 @@ function addOneDate($date, $separator = '-', $format = 'y-m-d') {
 
 // 切换英文大小写
 function toggleCase($s) {
-    for($i = 0, $c = strlen($s); $i < $c; $i++)                             // 遍历字符串
-        if((ord($s[$i]) > 64) && (ord($s[$i]) < 91))                        // 检测大写
-            $s[$i] = chr(ord($s[$i]) + 32);                                 // 转换大写为小写
-        else if((ord($s[$i]) > 96) && (ord($s[$i]) < 123))                  // 检测小写
-            $s[$i] = chr(ord($s[$i]) - 32);                                 // 转换小写为大写
-    return $s;
+  for($i = 0, $c = strlen($s); $i < $c; $i++)                               // 遍历字符串
+    if((ord($s[$i]) > 64) && (ord($s[$i]) < 91))                            // 检测大写
+      $s[$i] = chr(ord($s[$i]) + 32);                                       // 转换大写为小写
+    else if((ord($s[$i]) > 96) && (ord($s[$i]) < 123))                      // 检测小写
+      $s[$i] = chr(ord($s[$i]) - 32);                                       // 转换小写为大写
+  return $s;
 }
 
 // 将小驼峰转换为小写下划线
 function convertNaming($name) {
-    $newName = '';                                                          // 准备新字符串
-    for($i = 0, $j = 0, $c = strlen($name); $i < $c; $i++)                  // 遍历原字符串
-        if((ord($name[$i]) > 64) && (ord($name[$i]) < 91))                  // 检测大写
-            $newName = $newName.'_'.toggleCase($name[$i]);                  // 转换小写并加 _
-        else
-            $newName = $newName.$name[$i];                                  // 不是大写，直接拼接
-    return $newName;
+  $newName = '';                                                          // 准备新字符串
+  for($i = 0, $j = 0, $c = strlen($name); $i < $c; $i++)                  // 遍历原字符串
+    if((ord($name[$i]) > 64) && (ord($name[$i]) < 91))                    // 检测大写
+      $newName = $newName.'_'.toggleCase($name[$i]);                      // 转换小写并加 _
+    else
+      $newName = $newName.$name[$i];                                      // 不是大写，直接拼接
+  return $newName;
 }
 
-// basename，某些版本 php 没有 basename，这里重新实现下
-function rwBaseName($name) {
-    $name = explode('\\', $name);
-    return $name[count($name) - 1];
+// 代替 basename
+function rwBaseName($s) {
+  $name = explode('\\', $s);
+  return $name[count($name) - 1];
 }
 
 // 生成随机字符串
 function randString(&$s, $len) {
   $c = 'abcdefghijklmnopqistuvwxyzABCDEFGHJKLMNOPQISTUVWXYZ23456789';       //字符表
-  for($i = 0; $i < $len; $i++)   $s = $s.$c[mt_rand(0,59)];                 //拼接随机字符串
+  for($i = 0; $i < $len; $i++)   $s = $s.$c[mt_rand(0, 59)];                //拼接随机字符串
   return $s;
 }
 
